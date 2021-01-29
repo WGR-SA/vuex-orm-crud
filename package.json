@@ -1,6 +1,6 @@
 {
-  "name": "@wgr/vuex-orm-crud",
-  "version": "0.0.0",
+  "name": "@wgr-sa/vuex-orm-crud",
+  "version": "0.0.1",
   "description": "vuex-orm plugin for RESTful CRUD backends",
   "main": "dist/index.js",
   "repository": "https://github.com/WGR-SA/vuex-orm-crud",
