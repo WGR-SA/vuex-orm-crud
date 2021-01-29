@@ -1,7 +1,7 @@
-import saveMethod from '../methods/save'
-import updateMethod from '../methods/update'
-import pickKeys from '../methods/pick-keys'
-import Service from '../Service.js'
+import saveMethod from '@/methods/save'
+import updateMethod from '@/methods/update'
+import pickKeys from '@/methods/pick-keys'
+import Service from '@/Service.js'
 
 const services = {}
 

@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "description": "vuex-orm plugin for RESTful CRUD backends",
   "main": "dist/index.js",
-  "repository": "",
-  "author": "",
+  "repository": "https://github.com/WGR-SA/vuex-orm-crud",
+  "author": "awallef",
   "license": "MIT",
   "private": false,
   "scripts": {
