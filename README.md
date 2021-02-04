@@ -6,7 +6,7 @@
 
 [Vuex-ORM](https://github.com/vuex-orm/vuex-orm) brings Object-Relational Mapping to the Vuex Store. vuex-orm-rest lets you communicate with RESTful backends.
 
-The plugin extends the basic model of Vuex-ORM with some helful functions to make CRUD operations such as (save, fetch, fetchAll, update and delete).
+The plugin extends the basic model of Vuex-ORM with some helful functions to make CRUD operations such as save, get, paginate, update.
 
 You no longer need to access your http client manually. All the comunication happens thru the enhanced Vuex-ORM models.
 
@@ -130,4 +130,11 @@ export default
 * (readonly) Model.crud().paginator
 * Model.crud().page
 * Model.crud().limit
+
+# TODO
+* delete instance method
+* doc improvment
+* tests
+* webpack cleaning :)
+* and more
 
