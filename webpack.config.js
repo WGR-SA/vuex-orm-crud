@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
   entry: ['@babel/polyfill', './src/index.js'],
   output: {
-    library: 'vuex-orm-rest',
+    library: 'vuex-orm-crud',
     libraryTarget: 'umd',
     path: path.resolve(__dirname, 'dist'),
     filename: 'index.js',
