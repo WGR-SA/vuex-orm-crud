@@ -34,7 +34,7 @@ yarn add axios
 # Installation
 
 ``` bash
-yarn add @wgr/vuex-orm-crud
+yarn add @wgr-sa/vuex-orm-crud
 ```
 The following exmaple installs the plugin using [axios](https://github.com/axios/axios) as the HTTP-Client and a vue-router instance.
 
@@ -42,7 +42,7 @@ The following exmaple installs the plugin using [axios](https://github.com/axios
 import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexORM from '@vuex-orm/core'
-import VuexORMCRUD from '@wgr/vuex-orm-crud'
+import VuexORMCRUD from '@wgr-sa/vuex-orm-crud'
 import axios from 'axios'
 
 const client = axios.create({ baseURL: '/api' })
