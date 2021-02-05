@@ -3,7 +3,7 @@ import apiPathMethod from '@/methods/api-path'
 import deleteMethod from '@/methods/delete'
 import saveMethod from '@/methods/save'
 import updateMethod from '@/methods/update'
-import pickKeys from '@/methods/pick-keys'
+import pickKeysMethod from '@/methods/pick-keys'
 import Service from '@/Service.js'
 
 const services = {}
@@ -22,7 +22,7 @@ export default function( Model, config)
   Model.prototype.delete = deleteMethod
   Model.prototype.save = saveMethod
   Model.prototype.update = updateMethod
-  Model.prototype.pickKeys = pickKeys
+  Model.prototype.pickKeys = pickKeysMethod
 
   // Static Magic api path
   Model._apiPath = null

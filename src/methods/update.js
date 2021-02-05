@@ -1,18 +1,33 @@
-export default async function update(path = null, keys = Object.keys(this.$toJson()), config = null)
-{
-  /* TODO: parse config for specific: client, dataKey, save, persistBy, persistOptions */
-  const conf = Object.assign({}, this.constructor.crud().config, config)
+import _ from 'lodash'
+import axiosFilter from '@/filters/axios.js'
+import parserFilter from '@/filters/parser.js'
+import ormInsertFilter from '@/filters/orm-insert.js'
+import relationsFilter from '@/filters/relations.js'
+import createPathMethod from '@/methods/create-path.js'
 
+export default async function update(path = null, keys = null, config = null)
+{
+  const
+  conf = Object.assign({}, this.constructor.crud().config, config),
+  axiosConf = axiosFilter(conf),
+  parserConf = parserFilter(conf),
+  ormInsertConf = ormInsertFilter(conf),
+  relations = relationsFilter(conf)
+
+  // check client
   const { put } = conf.client
   if(_.isUndefined(put)) throw new Error(`HTTP Client has no put method`)
 
-  const data = this.pickKeys(keys)
-  const response = await put(path?? this.apiPath(), data, config)
+  // request
+  const data = this.pickKeys(keys?? Object.keys(this.$toJson()))
+  const response = await put(createPathMethod(path?? this.apiPath(), relations), data, axiosConf)
 
   // merge
-  const values = Object.assign({}, data, conf.dataKey? response.data[conf.dataKey]: response.data)
+  const values = Object.assign({}, data, parserConf.dataKey? response.data[parserConf.dataKey]: response.data)
 
-  /* TODO don't save if save = false */
+  // don't save if save = false
+  if(!ormInsertConf.save) return values;
+
   const stored = await this.$update(values)
   return stored
 }

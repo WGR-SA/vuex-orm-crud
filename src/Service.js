@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import joinPath from 'path.join';
+import getMethod from '@/methods/get.js';
 
 export default class Service {
 
@@ -25,11 +26,15 @@ export default class Service {
 
   #defaultConfig = {
     client: null,
-    save: true,
     dataKey: 'data',
     paginationKey: 'pagination',
+
+    save: true,
     persistBy: 'insertOrUpdate',
     persistOptions: null,
+
+    filter: {},
+    relations: [],
   }
 
   constructor(model, config)
@@ -125,7 +130,9 @@ export default class Service {
 
   async get(path = null, config = null)
   {
+    return await getMethod(this, path, config)
     /* TODO: parse config for specific: client, dataKey, save, persistBy, persistOptions */
+    /*
     const conf = Object.assign({}, this.config, config)
 
 
@@ -154,6 +161,7 @@ export default class Service {
     this.model[conf.persistBy](storeObject)
 
     return records;
+    */
   }
 
   save(where)
