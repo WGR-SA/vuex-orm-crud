@@ -1,3 +1,4 @@
+import deleteMethod from '@/methods/delete'
 import saveMethod from '@/methods/save'
 import updateMethod from '@/methods/update'
 import pickKeys from '@/methods/pick-keys'
@@ -15,6 +16,7 @@ export default function( Model, config)
   }
 
   // Instance
+  Model.prototype.delete = deleteMethod
   Model.prototype.save = saveMethod
   Model.prototype.update = updateMethod
   Model.prototype.pickKeys = pickKeys
