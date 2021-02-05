@@ -1,3 +1,5 @@
+import _ from 'lodash'
+import apiPathMethod from '@/methods/api-path'
 import deleteMethod from '@/methods/delete'
 import saveMethod from '@/methods/save'
 import updateMethod from '@/methods/update'
@@ -16,11 +18,17 @@ export default function( Model, config)
   }
 
   // Instance
+  Model.prototype.apiPath = apiPathMethod
   Model.prototype.delete = deleteMethod
   Model.prototype.save = saveMethod
   Model.prototype.update = updateMethod
   Model.prototype.pickKeys = pickKeys
 
-  // test :)
-  Model.prototype.sayHello = () => { console.log('hello world!') }
+  // Static Magic api path
+  Model._apiPath = null
+  Object.defineProperty(Model, 'apiPath',
+  {
+    get: function() { return this._apiPath?? _.kebabCase(this.entity) },
+    set : function(path) { this._apiPath = path }
+  })
 }

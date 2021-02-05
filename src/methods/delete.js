@@ -1,4 +1,4 @@
-export default async function del(path, keys = Object.keys(this.$toJson()), config = null)
+export default async function del(path = null, keys = Object.keys(this.$toJson()), config = null)
 {
   /* TODO: parse config for specific: client, dataKey, save, persistBy, persistOptions */
   const conf = Object.assign({}, this.constructor.crud().config, config)
@@ -7,7 +7,7 @@ export default async function del(path, keys = Object.keys(this.$toJson()), conf
   if(_.isUndefined(del)) throw new Error(`HTTP Client has no delete method`)
 
   const data = this.pickKeys(keys)
-  const response = await del(path, data, config)
+  const response = await del(path?? this.apiPath(), data, config)
 
   const stored = await this.$delete();
   return stored

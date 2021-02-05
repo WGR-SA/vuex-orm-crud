@@ -1,4 +1,4 @@
-export default async function update(path, keys = Object.keys(this.$toJson()), config = null)
+export default async function update(path = null, keys = Object.keys(this.$toJson()), config = null)
 {
   /* TODO: parse config for specific: client, dataKey, save, persistBy, persistOptions */
   const conf = Object.assign({}, this.constructor.crud().config, config)
@@ -7,7 +7,7 @@ export default async function update(path, keys = Object.keys(this.$toJson()), c
   if(_.isUndefined(put)) throw new Error(`HTTP Client has no put method`)
 
   const data = this.pickKeys(keys)
-  const response = await put(path, data, config)
+  const response = await put(path?? this.apiPath(), data, config)
 
   // merge
   const values = Object.assign({}, data, conf.dataKey? response.data[conf.dataKey]: response.data)

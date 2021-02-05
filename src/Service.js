@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import joinPath from 'path.join';
 
 export default class Service {
 
@@ -101,7 +102,7 @@ export default class Service {
     return await this.paginate(this.#paginator.path, this.#paginator.config)
   }
 
-  async paginate(path, config = null, reset = false)
+  async paginate(path = null, config = null, reset = false)
   {
     let page = reset? 1: this.page
 
@@ -117,7 +118,12 @@ export default class Service {
     return await this.get(path, config)
   }
 
-  async get(path, config = null)
+  async getOne(id, config = null)
+  {
+    return await this.get(joinPath(this.model.apiPath, id.toString()), config)
+  }
+
+  async get(path = null, config = null)
   {
     /* TODO: parse config for specific: client, dataKey, save, persistBy, persistOptions */
     const conf = Object.assign({}, this.config, config)
@@ -127,7 +133,7 @@ export default class Service {
     if(_.isUndefined(get)) throw new Error(`HTTP Client has no get method`)
 
     // query
-    const response = await get(path, config)
+    const response = await get(path?? this.model.apiPath, config)
     const records = conf.dataKey? response.data[conf.dataKey]: response.data
 
     // pagination
