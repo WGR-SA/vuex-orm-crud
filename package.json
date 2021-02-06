@@ -48,5 +48,15 @@
     "vuex": "^3.0.1",
     "webpack": "^4.17.1",
     "webpack-cli": "^3.1.0"
-  }
+  },
+  "keywords": [
+    "vue",
+    "vuex",
+    "vuex-plugin",
+    "vuex-orm",
+    "vuex-orm-plugin",
+    "axios",
+    "crud",
+    "api"
+  ],
 }

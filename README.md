@@ -306,8 +306,7 @@ when performing a get/getOne/save/upadte/delete call you can pass a config objec
 ```
 
 # TODO
-* doc improvments + vue press 🙏
+* doc improvements + vue press 🙏
 * tests
 * add skills
-* filtering in get methods
 * and more
