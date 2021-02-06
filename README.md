@@ -163,14 +163,14 @@ export default
 ### Static class methods
 Every model have a crud service
 
-#### 🔧  Model.crud()
+#### - Model.crud()
 this returns the service holding settings and client...
 
 
 ### Instance methods
-#### 🔧  (async) model.delete(path = null, keys = null, conf = null)
-#### 🔧  (async) model.save(path = null, keys = null, conf = null)
-#### 🔧  (async) model.update(path = null, keys = null, conf = null)
+#### - (async) model.delete(path = null, keys = null, conf = null)
+#### - (async) model.save(path = null, keys = null, conf = null)
+#### - (async) model.update(path = null, keys = null, conf = null)
 ```javascript
 this.section.update(
   null, // if null, the path is guested by _.kebabCase(section.entity) / section.$id
@@ -185,12 +185,12 @@ Request URL: http://api/pages/1/sections/1
 Request Method: PUT
 Request Payload: {"order":1}
 ```
-#### 🔧  model.pickKeys(keys | null)
+#### - model.pickKeys(keys | null)
 
 ###### NOTE every instance can save/update/delete itself
 
 ### Service methods
-#### 🔧  (async) Model.crud().get(path = null, config = null)
+#### - (async) Model.crud().get(path = null, config = null)
 returns records and stores the get query with conf.persistOptions as vuex-orm
 
 ```javascript
@@ -231,9 +231,9 @@ Request URL: http://api/pages/1/sections
 Request Method: GET
 ```
 
-#### 🔧  (async) Model.crud().getOne(id, config = null)
+#### - (async) Model.crud().getOne(id, config = null)
 fetches model/id record...
-#### 🔧  (async) Model.crud().paginate(path = null, config = null, reset = false)
+#### - (async) Model.crud().paginate(path = null, config = null, reset = false)
 handles pagination for you through some automated settings
 
 ```javascript
@@ -243,13 +243,13 @@ handles pagination for you through some automated settings
 }
 ```
 
-#### 🔧  (async) Model.crud().goTo(page)
+#### - (async) Model.crud().goTo(page)
 returns paginate methods result
 
 ### Service properties
-#### 🔧  Model.crud().config
-#### 🔧  Model.crud().client
-#### 🔧  (readonly) Model.crud().pagination
+#### - Model.crud().config
+#### - Model.crud().client
+#### - (readonly) Model.crud().pagination
 
 ```javascript
 {
@@ -262,7 +262,7 @@ returns paginate methods result
 }
 ```
 
-#### 🔧  (readonly) Model.crud().paginator
+#### - (readonly) Model.crud().paginator
 
 ```javascript
 {
@@ -273,8 +273,8 @@ returns paginate methods result
 }
 ```
 
-#### 🔧  Model.crud().page (int)
-#### 🔧  Model.crud().limit (int)
+#### - Model.crud().page (int)
+#### - Model.crud().limit (int)
 
 ## Configure all your calls
 
