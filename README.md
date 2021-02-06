@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="192" src="https://github.com/vuex-orm/vuex-orm/raw/master/logo-vuex-orm.png" alt="Vuex ORM">
+<img width="192" src="https://github.com/vuex-orm/vuex-orm/raw/master/logo-vuex-orm.png" alt="Vuex ORM">
 </p>
 
 <h1 align="center">Vuex ORM Plugin: vuex-orm-crud</h1>
@@ -36,7 +36,7 @@ npm i axios
 ```bash
 npm i @wgr-sa/vuex-orm-crud
 ```
-The following example installs the plugin using [axios](https://github.com/axios/axios) as the HTTP-Client and a vue-router instance.
+The following example installs the plugin using [axios](https://github.com/axios/axios) and registers two models to play with.
 
 ## Example
 
@@ -68,16 +68,58 @@ export default new Vuex.Store({
 });
 ```
 
+### note: vuex-orm models
+```javascript
+// models/Page.js
+import { Model } from '@vuex-orm/core'
+import Section from './Section'
+
+export default class Page extends Model
+{
+  static entity = 'pages'
+
+  static fields ()
+  {
+    return {
+      id: this.attr(null).nullable(),
+      title: this.attr(null),
+
+      sections: this.hasMany(Section, 'page_id'),
+    }
+  }
+}
+
+// models/Section.js
+import { Model } from '@vuex-orm/core'
+import Page from './Page'
+
+export default class Section extends Model
+{
+  static entity = 'sections'
+
+  static fields ()
+  {
+    return {
+      id: this.attr(null).nullable(),
+      page_id: this.attr(null),
+      name: this.attr(null),
+
+      page: this.belongsTo(Page, 'page_id'),
+    }
+  }
+}
+```
+
 ### note: Vue Component
 ```html
 <template lang="html">
   <div class="">
 
-   <h1>{{page.title}}</h1>
+    <h1>{{page.title}}</h1>
 
-   <ul>
-   	<li v-for="s in page.sections">{{s.name}}</li>
-   </ul>
+    <ul>
+      <li v-for="s in page.sections">{{s.name}}</li>
+    </ul>
 
   </div>
 </template>
@@ -107,10 +149,10 @@ export default
   },
   methods:
   {
-  	readyToGo()
-  	{
-  		console.log(this.page) // page is ready & store is full : )
-  	}
+    readyToGo()
+    {
+      console.log(this.page) // page is ready & store is full : )
+    }
   }
 }
 </script>
@@ -131,9 +173,9 @@ this returns the service holding settings and client...
 ##### (async) model.update(path = null, keys = null, conf = null)
 ```javascript
 this.section.update(
-	null, // here path is guested by entity model's prop
-	['order'], // we update only order prop
-	[relations:[this.page]] // config, here we explain the path is prefixed by pages/id
+  null, // if null, the path is guested by _.kebabCase(section.entity) / section.$id
+  ['order'], // we update only order prop
+  [relations:[this.page]] // config.relations: here we add a path prefix with this.page ( = pages/$id )
 )
 ```
 ...so here a PUT Method will be performed as follow:
@@ -152,33 +194,33 @@ returns records and stores the get query with conf.persistOptions as vuex-orm
 
 ```javascript
 Section.crud().get(
-	
-	// path to your api crud model's endpoint
-	null, // here path is guested by entity model's prop
-	
-	// conf object 
-	[
-		// all axios settings are allowed
-		onDownloadProgress: function (progressEvent) {
-	    	// Do whatever you want with the native progress event
-	  	},
-	  	
-	  	// client & response settings
-	  	client: null,
-		dataKey: 'data',
-		paginationKey: 'pagination',
-		
-		// vuex-orm save strategies
-		save: true,
-		persistBy: 'insertOrUpdate',
-		persistOptions: null,
-		
-		// model instance to prefix path calls ( 
-		relations: [this.page], // here pages/id
-		
-		// Array.filter options ( to do ... )
-		filter: {},
-	]
+
+  // path to your api crud model's endpoint
+  null, // here path is guested by entity model's prop
+
+  // conf object
+  [
+    // client
+    client: null,
+
+    // all axios settings are allowed
+    onDownloadProgress: function (progressEvent) {
+      // Do whatever you want with the native progress event
+    },
+
+    // model instance to prefix path calls (
+    relations: [this.page], // here pages/id
+
+    dataKey: 'data',
+    paginationKey: 'pagination',
+    dataTransformer: null,
+    filter: null,
+
+    // vuex-orm save strategies
+    save: true,
+    persistBy: 'insertOrUpdate',
+    persistOptions: null,
+  ]
 )
 ```
 ...so here a GET Method will be performed as follow:
@@ -189,9 +231,17 @@ Request Method: GET
 ```
 
 ##### (async) Model.crud().getOne(id, config = null)
-returns records and stores the get query with conf.persistOptions as vuex-orm
+fetches model/id record...
 ##### (async) Model.crud().paginate(path = null, config = null, reset = false)
-returns get methods result
+handles pagination for you through some automated settings
+
+```javascript
+{
+  params: {page: this.page, limit: this.limit}, // axios query params ?page=&limt=
+  persistBy: 'create' // for the vuex-orm store behaviour
+}
+```
+
 ##### (async) Model.crud().goTo(page)
 returns paginate methods result
 
@@ -199,9 +249,31 @@ returns paginate methods result
 ##### Model.crud().config
 ##### Model.crud().client
 ##### (readonly) Model.crud().pagination
+
+```javascript
+{
+  count: 1,
+  current_page: 1,
+  has_next_page: false,
+  has_prev_page: false,
+  limit: null,
+  page_count: 1,
+}
+```
+
 ##### (readonly) Model.crud().paginator
-##### Model.crud().page
-##### Model.crud().limit
+
+```javascript
+{
+  page: 1,
+  limit: 1,
+  path: '',
+  config: {}
+}
+```
+
+##### Model.crud().page (int)
+##### Model.crud().limit (int)
 
 ## Configure all your calls
 
@@ -209,32 +281,32 @@ when performing a get/getOne/save/upadte/delete call you can pass a config objec
 
 ```javascript
 {
-	// all axios settings are allowed
-	onDownloadProgress: function (progressEvent) {
-    	// Do whatever you want with the native progress event
-  	},
-  	
-  	// client & response settings
-  	client: null,
-	dataKey: 'data',
-	paginationKey: 'pagination',
-	
-	// vuex-orm save strategies
-	save: true,
-	persistBy: 'insertOrUpdate',
-	persistOptions: null,
-	
-	// model instance to prefix path calls ( 
-	relations: [this.page], // here pages/id
-	
-	// Array.filter options ( to do ... )
-	filter: {},
+  // client
+  client: null,
+
+  // all axios settings are allowed
+  onDownloadProgress: function (progressEvent) {
+    // Do whatever you want with the native progress event
+  },
+
+  // model instance to prefix path calls (
+  relations: [this.page], // here pages/id
+
+  dataKey: 'data',
+  paginationKey: 'pagination',
+  dataTransformer: null, // function (response) return [] | {} | null #!if set: bypass the dataKey!
+  filter: null, // Array.filter fct
+
+  // vuex-orm save strategies
+  save: true,
+  persistBy: 'insertOrUpdate', // GET ONLY
+  persistOptions: null, // GET ONLY
 }
 ```
 
 # TODO
-* doc improvments
+* doc improvments + vue press 🙏
 * tests
-* webpack cleaning :)
+* add skills
 * filtering in get methods
 * and more

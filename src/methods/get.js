@@ -3,7 +3,8 @@ import axiosFilter from '@/filters/axios.js'
 import parserFilter from '@/filters/parser.js'
 import ormInsertFilter from '@/filters/orm-insert.js'
 import relationsFilter from '@/filters/relations.js'
-import createPathMethod from '@/methods/create-path.js'
+import pathHelper from '@/helpers/path.js'
+import parserHelper from '@/helpers/parser.js'
 
 export default async function get(Service, path = null, config = null)
 {
@@ -20,15 +21,8 @@ export default async function get(Service, path = null, config = null)
   if(_.isUndefined(get)) throw new Error(`HTTP Client has no get method`)
 
   // request
-  const response = await get(createPathMethod(path?? Service.model.apiPath, relations), axiosConf)
-  const records = parserConf.dataKey? response.data[parserConf.dataKey]: response.data
-
-  // pagination
-  if(parserConf.paginationKey && response.data[parserConf.paginationKey])
-  {
-    let pagination = response.data[parserConf.paginationKey]
-    Service.pagination = pagination
-  }
+  const response = await get(pathHelper(path?? Service.model.apiPath, relations), axiosConf)
+  const records = parserHelper(response, parserConf, Service)
 
   // don't save if save = false
   if(!ormInsertConf.save) return records;

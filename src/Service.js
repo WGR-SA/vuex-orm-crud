@@ -25,16 +25,21 @@ export default class Service {
   #config = {}
 
   #defaultConfig = {
+
+    // call
     client: null,
+    relations: [],
+
+    // response
     dataKey: 'data',
     paginationKey: 'pagination',
+    dataTransformer: null,
+    filter: null,
 
+    // store
     save: true,
     persistBy: 'insertOrUpdate',
     persistOptions: null,
-
-    filter: {},
-    relations: [],
   }
 
   constructor(model, config)

@@ -3,7 +3,9 @@ import _ from 'lodash'
 const
 allowed = [
   'dataKey',
-  'paginationKey'
+  'paginationKey',
+  'dataTransformer',
+  'filter',
 ],
 filter = (obj, ...rest) =>  _.pick(Object.assign(obj, ...rest), allowed)
 

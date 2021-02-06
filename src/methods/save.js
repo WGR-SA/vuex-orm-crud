@@ -3,7 +3,8 @@ import axiosFilter from '@/filters/axios.js'
 import parserFilter from '@/filters/parser.js'
 import ormInsertFilter from '@/filters/orm-insert.js'
 import relationsFilter from '@/filters/relations.js'
-import createPathMethod from '@/methods/create-path.js'
+import pathHelper from '@/helpers/path.js'
+import parserHelper from '@/helpers/parser.js'
 
 export default async function save(path = null, keys = null, config = null)
 {
@@ -18,10 +19,10 @@ export default async function save(path = null, keys = null, config = null)
   if(_.isUndefined(post)) throw new Error(`HTTP Client has no post method`)
 
   const data = this.pickKeys(keys?? Object.keys(this.$toJson()))
-  const response = await post(createPathMethod(path?? this.apiPath(), relations), data, axiosConf)
+  const response = await post(pathHelper(path?? this.apiPath(), relations), data, axiosConf)
 
   // merge
-  const values = Object.assign({}, data, parserConf.dataKey? response.data[parserConf.dataKey]: response.data)
+  const values = Object.assign({}, data, parserHelper(response, parserConf))
 
   // don't save if save = false
   if(!ormInsertConf.save) return values;

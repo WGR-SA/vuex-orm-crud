@@ -26,7 +26,6 @@
     ]
   },
   "dependencies": {
-    "arboreal.js": "^0.0.3",
     "lodash": "^4.17.11",
     "path.join": "^1.0.0"
   },
