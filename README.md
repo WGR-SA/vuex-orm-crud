@@ -4,11 +4,11 @@
 
 <h1 align="center">Vuex ORM Plugin: vuex-orm-crud</h1>
 
-[Vuex-ORM](https://github.com/vuex-orm/vuex-orm) brings Object-Relational Mapping to the Vuex Store. vuex-orm-rest lets you communicate with RESTful backends.
+[Vuex-ORM](https://github.com/vuex-orm/vuex-orm) brings Object-Relational Mapping to the Vuex Store. @wgr-sa/vuex-orm-crud lets you communicate with RESTful backends.
 
 The plugin extends the basic model of Vuex-ORM with some helful functions to make CRUD operations such as save, get, paginate, update, delete.
 
-You no longer need to access your http client manually. All the comunication happens thru the enhanced Vuex-ORM models.
+You no longer need to access your http client manually. All the communication happens thru the enhanced Vuex-ORM models.
 
 # Dependencies
 
