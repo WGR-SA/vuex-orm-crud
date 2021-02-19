@@ -81,6 +81,11 @@ export default class Service {
     return this.#pagination
   }
 
+  set pagination(pagination)
+  {
+    return this.#pagination = pagination
+  }
+
   get paginator()
   {
     return this.#paginator
