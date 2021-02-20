@@ -49,3 +49,42 @@ export default class Page extends Model
   }
 }
 ```
+
+### Configure the calls and the storage method
+
+You can configure several aspects of the action. Find bellow the configuration object spec.
+
+```javascript
+Section.crud().get(
+
+  // path to your api crud model's endpoint
+  null, // here path is guested by entity model's prop
+
+  // conf object
+  [
+    // client
+    client: null,
+
+    // all axios settings are allowed
+    onDownloadProgress: function (progressEvent) {
+      // Do whatever you want with the native progress event
+    },
+
+    // model instance to prefix path calls (
+    relations: [this.page], // here pages/id
+
+    dataKey: 'data',
+    paginationKey: 'pagination',
+    dataTransformer: null,
+    filter: null,
+
+    // vuex-orm save strategies
+    save: true,
+    persistBy: 'insertOrUpdate',
+    persistOptions: null,
+  ]
+)
+```
+
+### To be continued
+More doc will come as soon as possible :)
