@@ -8,6 +8,17 @@ const sidebars = {
         '/guide/prologue/getting-started'
       ]
     },
+    {
+      title: 'CRUD',
+      collapsable: false,
+      children: [
+        '/guide/crud/client',
+        '/guide/crud/read',
+        '/guide/crud/create',
+        '/guide/crud/update',
+        '/guide/crud/delete'
+      ]
+    },
   ],
 
   api: [
@@ -25,7 +36,7 @@ module.exports = {
   title: 'Vuex ORM CRUD',
   description: 'A Vuex ORM plugin to deal CRUD stuff.',
 
-  base: '/',
+  base: '/vuex-orm-crud/',
 
   themeConfig: {
     repo: 'wgr-sa/vuex-orm-crud',

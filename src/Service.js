@@ -141,37 +141,6 @@ export default class Service {
   async get(path = null, config = null)
   {
     return await getMethod(this, path, config)
-    /* TODO: parse config for specific: client, dataKey, save, persistBy, persistOptions */
-    /*
-    const conf = Object.assign({}, this.config, config)
-
-
-    const { get } = conf.client
-    if(_.isUndefined(get)) throw new Error(`HTTP Client has no get method`)
-
-    // query
-    const response = await get(path?? this.model.apiPath, config)
-    const records = conf.dataKey? response.data[conf.dataKey]: response.data
-
-    // pagination
-    if(conf.paginationKey && response.data[conf.paginationKey])
-    {
-      let pagination = response.data[conf.paginationKey]
-      Object.assign(this.#pagination, pagination)
-    }
-
-    // don't save if save = false
-    if(!conf.save) return records;
-
-    // persistOptions
-    let storeObject = {data: records}
-    if(conf.persistOptions) storeObject.persistOptions = conf.persistOptions
-
-    // switch method persistBy
-    this.model[conf.persistBy](storeObject)
-
-    return records;
-    */
   }
 
   save(where)

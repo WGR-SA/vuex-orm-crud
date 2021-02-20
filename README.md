@@ -10,6 +10,13 @@ The plugin extends the basic model of Vuex-ORM with some helful functions to mak
 
 You no longer need to access your http client manually. All the communication happens thru the enhanced Vuex-ORM models.
 
+# Doumentation
+
+Find here the progressing documentation in vuepress:
+
+* [Docmuentation](https://wgr-sa.github.io/vuex-orm-crud/)
+
+
 # Dependencies
 
 * [vuex](https://github.com/vuejs/vuex)

@@ -183,4 +183,5 @@ See how to `save`, `update` and `delete` in the following doc!
 
 Vuex ORM CRUD offers a lot more features that help you deal with data. Please read through the documentation to find out more. Here are some good starting points to go from here.
 
-//- [Defining Models](/guide/model/defining-models.md)
+- [Fetch data](/guide/crud/read.md)
+- [Create data](/guide/crud/create.md)

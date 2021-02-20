@@ -6,200 +6,88 @@ sidebarDepth: 2
 
 ## Static Methods
 
-### store
+### crud
 
-- **`store(): void`**
+- **`crud(): Service`**
 
-  Get Vuex Store instance.
-
-  ```js
-  const store = User.store()
-  ```
-
-### dispatch
-
-- **`dispatch(method: string, payload?: any): Promise<any>`**
-
-  Dispatch a store action. It will generate module namespace automatically.
+  Get CRUD Service instance.
 
   ```js
-  User.dispatch('create', { data: { /* ... */ } })
+  const service = User.crud()
   ```
 
-### getters
+## Static Properties
 
-- **`getters(method: string): any`**
+### apiPath
 
-  Call a getter. It will generate module namespace automatically.
+- **`apiPath String`**
+
+  Sets the API path if different than entity value
 
   ```js
-  const users = User.$getters('all')()
+  Model.apiPath = 'models'
   ```
-
-### namespace
-
-- **`namespace(method: string): string`**
-
-  Get namespaced string to be used for dispathing actions or calling getters.
-
-  ```js
-  const method = User.namespace('create')
-
-  // 'entities/users/create'
-  ```
-
-### hydrate
-
-- **`hydrate(record?: Record): Record`**
-
-  Fill any missing fields in the given record with the default value defined in the model schema. Note that the returned object is not Model instance, it's plain object.
-
-  ```js
-  User.hydrate({ id: 1 })
-
-  // { id: 1, name: 'Default Name' }
-  ```
-
-  If you pass relational data, those will be hydrated as well.
-
-  ```js
-  User.hydrate({
-    id: 1,
-    posts: [
-      { id: 1, user_id: 1 },
-      { id: 2, user_id: 1 }
-    ]
-  })
-
-  /*
-    {
-      id: 1,
-      name: 'Default Name',
-      posts: [
-        { id: 1, user_id: 1, title: 'Default Title' },
-        { id: 2, user_id: 1, title: 'Default Title' }
-      ]
-    }
-  */
-  ```
-
-  > **NOTE:** `hydrate` method will not "normalize" the given data. It will fill any missing field, but it wouldn't attach correct id value to the foreign field, for example adding `id` value of the user to the `user_id` field of the post, or increment the value specified by the `uid` attribute.
 
 ## Instance Methods
 
-### $store
+### apiPath
 
-- **`$store(): void`**
+- **`apiPath(path = null): String`**
 
-  Get Vuex Store instance.
+  Return the API path for the instance
 
   ```js
-  const user = new User()
+  const user = User.find(1)
 
-  const store = user.$store()
+  console.log(user.apiPath()) // users/1
   ```
 
-### $dispatch
+### delete
 
-- **`$dispatch(method: string, payload?: any): Promise<any>`**
+- **`delete(path = null, keys = null, config = null): Promise`**
 
-  Dispatch a store action. It will generate module namespace automatically.
+  Deletes the instance in the API and the Store.
 
   ```js
-  const user = new User()
+  const user = User.find(1)
 
-  user.$dispatch('create', { data: { /* ... */ } })
+  user.delte()
   ```
 
-### $getters
 
-- **`$getters(method: string): any`**
+### pickKeys
 
-  Call a getter. It will generate module namespace automatically.
+- **`pickKeys(keys = Object.keys(this.$toJson())): Array`**
+
+  Deletes the instance in the API and the Store.
 
   ```js
-  const user = new User()
+  const user = User.find(1)
 
-  const users = user.$getters('all')()
+  console.log(user.pickKeys()); // ['first_name','last_name', ...]
   ```
 
-### $namespace
+### save
 
-- **`$namespace(method: string): string`**
+- **`save(path = null, keys = null, config = null): Promise`**
 
-  Get namespaced string to be used for dispathing actions or calling getters.
+  Saves the instance in the API and the Store.
 
   ```js
-  const user = new User()
+  const user = new User({first_name:'toto', last_name: 'foo'})
 
-  const method = user.$namespace('create')
-
-  // 'entities/users/create'
+  user.save()
   ```
 
-### $fields
+### update
 
-- **`$fields(): Object`**
+- **`update(path = null, keys = null, config = null): Promise`**
 
-  Get the `fields` object of the model.
-
-  ```js
-  import { Model } from '@vuex-orm/core'
-
-  class User extends Model {
-    static entity = 'users'
-
-    static fields () {
-      return {
-        id: this.attr(null),
-        name: this.attr('John Doe')
-      }
-    }
-  }
-
-  const user = new User()
-
-  user.$fields()
-
-  /*
-    {
-      username: {
-        value: null,     // default value
-        ...
-      },
-      name: {
-        value: John Doe, // default value
-        ...
-      }
-    }
-  */
-  ```
-
-### $id
-
-- **`$id(): any`**
-
-  Get the value of the primary key.
+  Updates the instance in the API and the Store.
 
   ```js
-  import { Model } from '@vuex-orm/core'
+  const user = User.find(1)
+  user.first_name = 'changed'
 
-  class User extends Model {
-    static entity = 'users'
-
-    static primaryKey = 'username'
-
-    static fields () {
-      return {
-        username: this.attr(null),
-        name: this.attr('')
-      }
-    }
-  }
-
-  const user = new User({ username: 'john-doe', name: 'John Doe' })
-
-  user.$id()
-
-  // 'john-doe'
+  user.update()
   ```
