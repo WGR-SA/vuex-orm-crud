@@ -11,7 +11,9 @@
     "watch": "webpack --mode development --watch",
     "build": "webpack --mode production",
     "lint": "eslint src/**/*.js test/**/*.js",
-    "test": "jest"
+    "test": "jest",
+    "docs": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
   "jest": {
     "transform": {
@@ -45,6 +47,8 @@
     "eslint-plugin-jest": "^21.22.0",
     "jest": "^23.5.0",
     "vue": "^2.5.17",
+    "vuepress": "^1.8.2",
+    "vuepress-theme-vue": "^1.1.1",
     "vuex": "^3.0.1",
     "webpack": "^4.17.1",
     "webpack-cli": "^3.1.0"
