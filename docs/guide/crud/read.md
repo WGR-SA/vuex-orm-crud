@@ -61,7 +61,7 @@ Section.crud().get(
   null, // here path is guested by entity model's prop
 
   // conf object
-  [
+  {
     // client
     client: null,
 
@@ -71,7 +71,7 @@ Section.crud().get(
     },
 
     // model instance to prefix path calls (
-    relations: [this.page], // here pages/id
+    relations: [], // here no nested ressource
 
     dataKey: 'data',
     paginationKey: 'pagination',
@@ -82,7 +82,7 @@ Section.crud().get(
     save: true,
     persistBy: 'insertOrUpdate',
     persistOptions: null,
-  ]
+  }
 )
 ```
 
