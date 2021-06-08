@@ -45,7 +45,6 @@ export default class Service {
   constructor(model, config)
   {
     let msg = `ORM CRUD Service ${model.name} created`
-    console.log(msg);
 
     this.model = model
     this.config = config
