@@ -1,4 +1,4 @@
-import ModelMixin from '@/mixins/Model'
+import ModelMixin from './mixins/Model'
 
 export default
 {

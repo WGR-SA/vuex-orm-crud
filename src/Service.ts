@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import joinPath from 'path.join';
-import getMethod from '@/methods/get.js';
+import getMethod from './methods/get.js';
 
 export default class Service {
 

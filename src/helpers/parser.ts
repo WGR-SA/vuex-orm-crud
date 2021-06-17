@@ -5,7 +5,7 @@ export default function parser(response, parserConf, Service = null)
   // pagination
   if(Service && parserConf.paginationKey && response.data[parserConf.paginationKey])
   {
-    let pagination = response.data[parserConf.paginationKey]
+    const pagination = response.data[parserConf.paginationKey]
     Service.pagination = pagination
   }
 

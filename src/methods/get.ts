@@ -1,10 +1,10 @@
 import _ from 'lodash'
-import axiosFilter from '@/filters/axios.js'
-import parserFilter from '@/filters/parser.js'
-import ormInsertFilter from '@/filters/orm-insert.js'
-import relationsFilter from '@/filters/relations.js'
-import pathHelper from '@/helpers/path.js'
-import parserHelper from '@/helpers/parser.js'
+import axiosFilter from '../filters/axios.js'
+import parserFilter from '../filters/parser.js'
+import ormInsertFilter from '../filters/orm-insert.js'
+import relationsFilter from '../filters/relations.js'
+import pathHelper from '../helpers/path.js'
+import parserHelper from '../helpers/parser.js'
 
 export default async function get(Service, path = null, config = null)
 {
@@ -28,7 +28,7 @@ export default async function get(Service, path = null, config = null)
   if(!ormInsertConf.save) return records;
 
   // persistOptions
-  let storeObject = {data: records}
+  const storeObject = {data: records}
   if(ormInsertConf.persistOptions) storeObject.persistOptions = ormInsertConf.persistOptions
 
   // switch method persistBy

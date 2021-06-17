@@ -1,10 +1,10 @@
 import _ from 'lodash'
-import apiPathMethod from '@/methods/api-path'
-import deleteMethod from '@/methods/delete'
-import saveMethod from '@/methods/save'
-import updateMethod from '@/methods/update'
-import pickKeysMethod from '@/methods/pick-keys'
-import Service from '@/Service.js'
+import apiPathMethod from '../methods/api-path'
+import deleteMethod from '../methods/delete'
+import saveMethod from '../methods/save'
+import updateMethod from '../methods/update'
+import pickKeysMethod from '../methods/pick-keys'
+import Service from '../Service.js'
 
 const services = {}
 
