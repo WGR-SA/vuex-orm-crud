@@ -1,4 +1,6 @@
 import _ from 'lodash'
+import { Model } from '@vuex-orm/core';
+
 import apiPathMethod from '../methods/api-path'
 import deleteMethod from '../methods/delete'
 import saveMethod from '../methods/save'
@@ -8,7 +10,7 @@ import Service from '../Service.js'
 
 const services = {}
 
-export default function( Model, config)
+export default function( Model: Model, config:Record<string, unknown>): void
 {
   // Static
   Model.crud = function()

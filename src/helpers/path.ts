@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import joinPath from 'path.join'
 
-export default function createPath(path, relations = [])
+export default function createPath(path:string|null, relations = []): string | null
 {
 
   if(relations.length)

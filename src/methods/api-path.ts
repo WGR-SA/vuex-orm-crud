@@ -1,6 +1,6 @@
 import joinPath from 'path.join';
 
-export default function apiPath(path = null)
+export default function apiPath(path = null): string | null
 {
   let p = this.constructor.apiPath
 

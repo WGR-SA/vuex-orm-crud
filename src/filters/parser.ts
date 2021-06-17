@@ -7,6 +7,6 @@ allowed = [
   'dataTransformer',
   'filter',
 ],
-filter = (obj, ...rest) =>  _.pick(Object.assign(obj, ...rest), allowed)
+filter = (obj:Record<string, unknown>, ...rest: []) :Record<string, unknown> =>  _.pick(Object.assign(obj, ...rest), allowed)
 
 export default filter

@@ -6,7 +6,7 @@ import relationsFilter from '../filters/relations.js'
 import pathHelper from '../helpers/path.js'
 import parserHelper from '../helpers/parser.js'
 
-export default async function get(Service, path = null, config = null)
+export default async function get(Service: Service, path = null, config = null): array | null
 {
   // filter stuff
   const

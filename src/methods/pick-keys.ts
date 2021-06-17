@@ -1,6 +1,7 @@
 import _ from 'lodash';
 
-export default function pickKeys(keys = Object.keys(this.$toJson())) {
+export default function pickKeys(keys = Object.keys(this.$toJson())):array
+{
   if (!_.isArray(keys)) {
     throw new Error('Keys need to be an array.');
   }

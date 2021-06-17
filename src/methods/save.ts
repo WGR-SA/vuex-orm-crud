@@ -6,7 +6,7 @@ import relationsFilter from '../filters/relations.js'
 import pathHelper from '../helpers/path.js'
 import parserHelper from '../helpers/parser.js'
 
-export default async function save(path = null, keys = null, config = null)
+export default async function save(path = null, keys = null, config = null):Record<string, unknown>
 {
   const
   conf = Object.assign({}, this.constructor.crud().config, config),

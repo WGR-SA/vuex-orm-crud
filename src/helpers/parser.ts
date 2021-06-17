@@ -1,6 +1,4 @@
-import _ from 'lodash'
-
-export default function parser(response, parserConf, Service = null)
+export default function parser(response:Record<string, unknown>, parserConf:Record<string, unknown>, Service = null): [] | null
 {
   // pagination
   if(Service && parserConf.paginationKey && response.data[parserConf.paginationKey])
