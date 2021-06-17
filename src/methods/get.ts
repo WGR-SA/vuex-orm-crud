@@ -28,7 +28,7 @@ export default async function get(Service, path = null, config = null)
   if(!ormInsertConf.save) return records;
 
   // persistOptions
-  const storeObject = {data: records}
+  const storeObject = {data: records, persistOptions: null}
   if(ormInsertConf.persistOptions) storeObject.persistOptions = ormInsertConf.persistOptions
 
   // switch method persistBy

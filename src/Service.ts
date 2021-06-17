@@ -22,7 +22,7 @@ export default class Service {
     page_count: 1,
   }
 
-  #config = {}
+  #config = {client:null}
 
   #defaultConfig = {
 
