@@ -23,6 +23,8 @@
     }
   },
   "dependencies": {
+    "axios": "^0.21.1",
+    "class-transformer": "^0.4.0",
     "lodash": "^4.17.11",
     "path.join": "^1.0.0"
   },

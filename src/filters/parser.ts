@@ -1,12 +1,14 @@
-import _ from 'lodash'
+import { plainToClass } from 'class-transformer';
 
-const
-allowed = [
-  'dataKey',
-  'paginationKey',
-  'dataTransformer',
-  'filter',
-],
-filter = (obj:Record<string, unknown>, ...rest: []) :Record<string, unknown> =>  _.pick(Object.assign(obj, ...rest), allowed)
+const arrayFilter = (value: any, index: number, array: any[]):any => true
+type ArrayFilter = typeof arrayFilter
 
-export default filter
+export class ParserConfig
+{
+  dataKey: string = null
+  paginationKey?: string = null
+  dataTransformer?: Function = null
+  filter?: ArrayFilter = null
+}
+
+export const filter = (obj:Record<string, unknown>) :ParserConfig =>  plainToClass(ParserConfig, obj)

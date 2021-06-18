@@ -2,7 +2,33 @@ import _ from 'lodash'
 import joinPath from 'path.join';
 import getMethod from './methods/get.js';
 
-export default class Service {
+
+export interface Client {
+  get: function;
+  delete: function;
+  put: function;
+  post: function;
+}
+
+export interface ServiceConfig {
+
+  // call
+  client?: Client;
+  relations: array;
+
+  // response
+  dataKey: string,
+  paginationKey: string,
+  dataTransformer?: string,
+  filter?: string,
+
+  // store
+  save: boolean,
+  persistBy: string,
+  persistOptions?: string,
+}
+
+export class Service {
 
   model = null
 

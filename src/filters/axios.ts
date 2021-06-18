@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { AxiosRequestConfig } from 'axios'
 
 const
 allowed = [
@@ -29,6 +30,6 @@ allowed = [
   'cancelToken',
   'decompress',
 ],
-filter = (obj:Record<string, unknown>, ...rest: []) :Record<string, unknown> =>  _.pick(Object.assign(obj, ...rest), allowed)
+filter = (obj:Record<string, unknown>, ...rest: []) :AxiosRequestConfig =>  _.pick(Object.assign(obj, ...rest), allowed)
 
 export default filter

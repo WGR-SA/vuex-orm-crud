@@ -1,4 +1,8 @@
-export default function parser(response:Record<string, unknown>, parserConf:Record<string, unknown>, Service = null): [] | null
+import {ServiceConfig, Service} from '../Service'
+
+import {ParserConfig} from '../filters/parser'
+
+export default function parser(response:Record<string, unknown>, parserConf:ParserConfig, Service:Service = null): [] | null
 {
   // pagination
   if(Service && parserConf.paginationKey && response.data[parserConf.paginationKey])
