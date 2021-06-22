@@ -29,7 +29,6 @@ allowed = [
   'proxy',
   'cancelToken',
   'decompress',
-],
-filter = (obj:Record<string, unknown>, ...rest: []) :AxiosRequestConfig =>  _.pick(Object.assign(obj, ...rest), allowed)
+]
 
-export default filter
+export default (obj:Record<string, unknown>, ...rest: []) :AxiosRequestConfig =>  _.pick(Object.assign(obj, ...rest), allowed)

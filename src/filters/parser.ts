@@ -1,14 +1,15 @@
 import { plainToClass } from 'class-transformer';
 
-const arrayFilter = (value: any, index: number, array: any[]):any => true
-type ArrayFilter = typeof arrayFilter
+interface arrayManip {
+  (value: string|[]|Record<string, unknown>, index?: number, array?: []): Record<string, unknown> | [];
+}
 
 export class ParserConfig
 {
   dataKey: string = null
   paginationKey?: string = null
-  dataTransformer?: Function = null
-  filter?: ArrayFilter = null
+  dataTransformer?: arrayManip = null
+  filter?: arrayManip = null
 }
 
-export const filter = (obj:Record<string, unknown>) :ParserConfig =>  plainToClass(ParserConfig, obj)
+export default (obj:Record<string, unknown>) :ParserConfig =>  plainToClass(ParserConfig, obj)

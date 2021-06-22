@@ -1,4 +1,4 @@
-import {ServiceConfig, Service} from '../Service'
+import {Service} from '../Service'
 
 import {ParserConfig} from '../filters/parser'
 

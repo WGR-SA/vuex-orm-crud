@@ -1,11 +1,10 @@
-import _ from 'lodash'
+import { plainToClass } from 'class-transformer';
 
-const
-allowed = [
-  'save',
-  'persistBy',
-  'persistOptions',
-],
-filter = (obj:Record<string, unknown>, ...rest: []) :Record<string, unknown> =>  _.pick(Object.assign(obj, ...rest), allowed)
+export class OrmConfig
+{
+  save: boolean = true
+  persistBy: string = 'insertOrUpdate'
+  persistOptions?: string = null
+}
 
-export default filter
+export default (obj:Record<string, unknown>) :OrmConfig =>  plainToClass(OrmConfig, obj)
