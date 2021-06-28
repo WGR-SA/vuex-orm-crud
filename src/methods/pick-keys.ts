@@ -1,10 +1,7 @@
-import _ from 'lodash';
+import * as _ from "lodash"
 
-export default function pickKeys(keys = Object.keys(this.$toJson())):[]
+export default function pickKeys(keys?: Array<string>):[]
 {
-  if (!_.isArray(keys)) {
-    throw new Error('Keys need to be an array.');
-  }
-
+  if(!keys) keys = Object.keys(this.$toJson())
   return _.omit(_.pick(this.$toJson(), keys), ['$id']);
 }

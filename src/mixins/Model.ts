@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import { Model } from '@vuex-orm/core';
 
 import apiPathMethod from '../methods/api-path'
@@ -6,31 +5,26 @@ import deleteMethod from '../methods/delete'
 import saveMethod from '../methods/save'
 import updateMethod from '../methods/update'
 import pickKeysMethod from '../methods/pick-keys'
-import {Service} from '../Service.js'
 
-const services = {}
-
-export default function( Model: Model, config:Record<string, unknown>): void
-{
-  // Static
-  Model.crud = function()
-  {
-    if(!services[this.name]) services[this.name] = new Service(this, config)
-    return services[this.name]
+/*
+declare global {
+  interface Model {
+    apiPath(path?: string): string | null;
+    delete(path?: string, keys?: Array<string>, config?:Record<string, unknown>): Promise<null|Model>;
+    save(path?: string, keys?: Array<string>, config?:Record<string, unknown>): Promise<null|Model>;
+    update(path?: string, keys?: Array<string>, config?:Record<string, unknown>): Promise<null|Model>;
+    pickKeys(keys?: Array<string>): [];
   }
+}
+*/
 
+export default function( model: typeof Model): void
+{
   // Instance
-  Model.prototype.apiPath = apiPathMethod
-  Model.prototype.delete = deleteMethod
-  Model.prototype.save = saveMethod
-  Model.prototype.update = updateMethod
-  Model.prototype.pickKeys = pickKeysMethod
+  model.constructor.prototype.apiPath = apiPathMethod
+  model.constructor.prototype.delete = deleteMethod
+  model.constructor.prototype.save = saveMethod
+  model.constructor.prototype.update = updateMethod
+  model.constructor.prototype.pickKeys = pickKeysMethod
 
-  // Static Magic api path
-  Model._apiPath = null
-  Object.defineProperty(Model, 'apiPath',
-  {
-    get: function() { return this._apiPath?? _.kebabCase(this.entity) },
-    set : function(path) { this._apiPath = path }
-  })
 }

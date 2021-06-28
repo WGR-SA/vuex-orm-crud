@@ -1,20 +1,12 @@
-import _ from 'lodash'
-import joinPath from 'path.join';
-import getMethod from './methods/get.js';
-
-
-export interface Client {
-  get: function;
-  delete: function;
-  put: function;
-  post: function;
-}
+import * as _ from "lodash"
+import joinPath from './utils/joinPath'
+import getMethod from './methods/get.js'
+import { Repository } from '@vuex-orm/core'
 
 export interface ServiceConfig {
 
   // call
-  client?: Client;
-  relations: array;
+  relations: [];
 
   // response
   dataKey: string,
@@ -30,7 +22,7 @@ export interface ServiceConfig {
 
 export class Service {
 
-  model = null
+  repository = null
 
   #paginator = {
     page: 1,
@@ -68,12 +60,14 @@ export class Service {
     persistOptions: null,
   }
 
-  constructor(model, config)
+  constructor(repository: typeof Repository, options: any)
   {
-    let msg = `ORM CRUD Service ${model.name} created`
+    let msg = `ORM CRUD Service ${repository.name} created`
+    console.log(msg)
 
-    this.model = model
-    this.config = config
+
+    this.repository = repository
+    this.config = options
   }
 
   set config(config)
@@ -136,7 +130,7 @@ export class Service {
     this.#paginator.limit = uint
   }
 
-  async goTo(page)
+  async goTo(page: number)
   {
     this.page = page
     return await this.paginate(this.#paginator.path, this.#paginator.config)
@@ -158,9 +152,9 @@ export class Service {
     return await this.get(path, config)
   }
 
-  async getOne(id, config = null)
+  async getOne(id:number | string, config = null)
   {
-    return await this.get(joinPath(this.model.apiPath, id.toString()), config)
+    return await this.get(joinPath(this.repository.apiPath, id.toString()), config)
   }
 
   async get(path = null, config = null)
@@ -168,13 +162,13 @@ export class Service {
     return await getMethod(this, path, config)
   }
 
-  save(where)
+  save(where:[]|null)
   {
-    return this.model.query().where(where).get().shift().save
+    return this.repository.query().where(where).get().shift().save
   }
 
-  update(where)
+  update(where:[]|null)
   {
-    return this.model.query().where(where).get().shift().update
+    return this.repository.query().where(where).get().shift().update
   }
 }

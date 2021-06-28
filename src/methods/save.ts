@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import * as _ from "lodash"
 import axiosFilter from '../filters/axios.js'
 import parserFilter from '../filters/parser.js'
 import ormInsertFilter from '../filters/orm-insert.js'

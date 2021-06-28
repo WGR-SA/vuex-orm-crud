@@ -1,9 +1,15 @@
-import ModelMixin from './mixins/Model'
+import { Store } from 'vuex'
+import {VuexORMPluginComponents} from '@vuex-orm/core'
+import storeMixin from './mixins/Store'
+import repositoryMixin from './mixins/Repository'
+import modelMixin from './mixins/Model'
 
 export default
 {
-  install (components, options)
+  install (store: Store<any>, components: VuexORMPluginComponents, options: any): void
   {
-    ModelMixin(components.Model, options)
+    storeMixin(store, options.client)
+    repositoryMixin(components.Repository, options)
+    modelMixin(components.Model)
   }
 }

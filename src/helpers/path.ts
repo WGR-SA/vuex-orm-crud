@@ -1,5 +1,5 @@
-import _ from 'lodash'
-import joinPath from 'path.join'
+import * as _ from "lodash";
+import joinPath from '../utils/joinPath'
 
 export default function createPath(path:string|null, relations = []): string | null
 {
