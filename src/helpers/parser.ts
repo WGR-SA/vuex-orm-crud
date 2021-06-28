@@ -2,7 +2,7 @@ import {Service} from '../Service'
 
 import {ParserConfig} from '../filters/parser'
 
-export default function parser(response:Record<string, unknown>, parserConf:ParserConfig, Service:Service = null): [] | null
+export default function parser(response:Record<string, unknown>, parserConf:ParserConfig, Service:Service = null): never[] | Record<string, unknown> | []
 {
   // pagination
   if(Service && parserConf.paginationKey && response.data[parserConf.paginationKey])
@@ -12,7 +12,7 @@ export default function parser(response:Record<string, unknown>, parserConf:Pars
   }
 
   // records
-  let records
+  let records: never[] | Record<string, unknown> | [] = null;
 
   // custom dataTransformer or dataKey !
   if (parserConf.dataTransformer) records = parserConf.dataTransformer(this.response)

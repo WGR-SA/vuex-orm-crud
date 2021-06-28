@@ -7,7 +7,7 @@ import pathHelper from '../helpers/path.js'
 import parserHelper from '../helpers/parser.js'
 import {Service} from '../Service.js'
 
-export default async function get(Service: Service, path = null, config = null): Promise<[]|null>
+export default async function get(Service: Service, path = null, config = null): Promise<never[]|Record<string, unknown>|[]|null>
 {
   // filter stuff
   const
@@ -22,7 +22,7 @@ export default async function get(Service: Service, path = null, config = null):
   if(_.isUndefined(get)) throw new Error(`HTTP Client has no get method`)
 
   // request
-  const response = await get(pathHelper(path?? Service.model.apiPath, relations), axiosConf)
+  const response = await get(pathHelper(path?? Service.repository.apiPath, relations), axiosConf)
   const records = parserHelper(response, parserConf, Service)
 
   // don't save if save = false
@@ -33,7 +33,7 @@ export default async function get(Service: Service, path = null, config = null):
   if(ormInsertConf.persistOptions) storeObject.persistOptions = ormInsertConf.persistOptions
 
   // switch method persistBy
-  Service.model[ormInsertConf.persistBy](storeObject)
+  Service.repository[ormInsertConf.persistBy](storeObject)
 
   return records;
 }
