@@ -4,7 +4,7 @@ export class OrmConfig
 {
   save = true
   persistBy = 'insertOrUpdate'
-  persistOptions?: string = null
+  persistOptions?: string
 }
 
 export default (obj:Record<string, unknown>) :OrmConfig =>  plainToClass(OrmConfig, obj)

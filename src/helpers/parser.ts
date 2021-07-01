@@ -1,8 +1,8 @@
-import {Service} from '../Service'
+import {AxiosResponse} from 'axios'
+import {Service} from '@/Service'
+import {ParserConfig} from '@/filters/parser'
 
-import {ParserConfig} from '../filters/parser'
-
-export default function parser(response:Record<string, unknown>, parserConf:ParserConfig, Service:Service = null): never[] | Record<string, unknown> | []
+export default function parser(response:AxiosResponse, parserConf:ParserConfig, Service:Service): never[] | Record<string, unknown> | []
 {
   // pagination
   if(Service && parserConf.paginationKey && response.data[parserConf.paginationKey])
@@ -12,14 +12,14 @@ export default function parser(response:Record<string, unknown>, parserConf:Pars
   }
 
   // records
-  let records: never[] | Record<string, unknown> | [] = null;
+  let records:any;
 
   // custom dataTransformer or dataKey !
-  if (parserConf.dataTransformer) records = parserConf.dataTransformer(this.response)
+  if (parserConf.dataTransformer) records = parserConf.dataTransformer(response.data)
   else records = parserConf.dataKey? response.data[parserConf.dataKey]: response.data
 
   //apply filter : )
-  if(parserConf.filter && Array.isArray(records)) records = records.filter(parserConf.filter)
+  if(parserConf.filter && Array.isArray(records)) records = Array.from(records).filter(parserConf.filter)
 
   // return result !
   return records
