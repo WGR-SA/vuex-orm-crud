@@ -36,7 +36,7 @@ describe('unit/VuexORMCRUD', () => {
     // check Service
     const userRepo = store.$repo(User)
     expect(userRepo.$crud).toBeInstanceOf(Service)
-    userRepo.$crud
+    console.log(userRepo.$crud.get())
     //expect(userRepo['$crud'].axios).toBe(client)
   })
 })

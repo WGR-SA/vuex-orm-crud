@@ -1,6 +1,7 @@
 import { Repository, Model } from '@vuex-orm/core'
 import { AxiosInstance } from 'axios'
 import { plainToClass } from 'class-transformer';
+import getMethod from '@/methods/get'
 
 export class ServiceConfig {
   dataKey:string = 'data'
@@ -18,7 +19,11 @@ export class Service {
     this.repository = repository
     this.axios = axios
     this.config = plainToClass(ServiceConfig, options, { excludeExtraneousValues: true })
-    console.log(this.config)
+
+  }
+
+  async get(path:string | null = null, config:any | null  = null){
+    return await getMethod(this, path, config)
   }
 }
 
