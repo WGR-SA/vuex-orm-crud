@@ -3,6 +3,7 @@ import { createStore } from 'vuex'
 import axios from 'axios'
 import VuexORM from '@vuex-orm/core'
 import VuexORMCRUD from '@/index'
+import {Service} from '@/Service'
 
 // Vuex ORM
 const client = axios.create({ baseURL: '/api' })
@@ -22,8 +23,21 @@ const store = createStore({
 
 describe('unit/VuexORMCRUD', () => {
 
+  // create user
+  class User extends VuexORM.Model {
+    static entity = 'users'
+  }
+
   it('can install the plugin', () => {
-    expect(store['$client']).toBe(client)
+
+    // check AXIOS
+    expect(store.$axios).toBe(client)
+
+    // check Service
+    const userRepo = store.$repo(User)
+    expect(userRepo['$crud']).toBeInstanceOf(Service)
+    console.log(userRepo['$crud'])
+    //expect(userRepo['$crud'].axios).toBe(client)
   })
 })
 

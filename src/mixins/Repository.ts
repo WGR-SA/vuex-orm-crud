@@ -1,15 +1,26 @@
-import * as _ from "lodash"
+import {kebabCase} from "lodash"
+import { AxiosInstance } from 'axios'
 import { Repository } from '@vuex-orm/core'
-import {Service} from '../Service.js'
+import {ServiceFactory, Service} from '@/Service'
 
-export default function mixin(repository: typeof Repository, options: any): void {
-  this.$crud = new Service(this.constructor, options)
+export default function mixin(repositoryClass: typeof Repository, axios: AxiosInstance, options: any): void {
+  // crud
+  const crudFactory = new ServiceFactory(repositoryClass, axios, options)
+  Object.defineProperty(repositoryClass.prototype, '$crud', {
+    get():Service  { return crudFactory.getService(this) }
+  })
 
-  // Static Magic api path
-  let _apiPath:string | null = null
-  Object.defineProperty(repository.constructor, 'apiPath',
-  {
-    get: function() { return _apiPath?? _.kebabCase(this.entity) },
-    set : function(path) { _apiPath = path }
+  /*
+  const crud = new Service(repositoryClass, axios, options)
+  Object.defineProperty(repositoryClass.prototype, '$crud', {
+    get():Service  { return crud }
+  })
+  */
+
+  // apiPath
+  let apiPath:string | null = null
+  Object.defineProperty(repositoryClass.prototype, 'apiPath',{
+    get: function() { return apiPath?? kebabCase(this.entity) },
+    set : function(path) { apiPath = path }
   })
 }
