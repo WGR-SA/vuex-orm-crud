@@ -1,6 +1,6 @@
 import {kebabCase} from "lodash"
-import { AxiosInstance } from 'axios'
-import { Repository } from '@vuex-orm/core'
+import {AxiosInstance} from 'axios'
+import {Repository} from '@vuex-orm/core'
 import {ServiceFactory, Service} from '@/Service'
 
 export default function mixin(repositoryClass: typeof Repository, axios: AxiosInstance, options: any): void {
@@ -9,13 +9,6 @@ export default function mixin(repositoryClass: typeof Repository, axios: AxiosIn
   Object.defineProperty(repositoryClass.prototype, '$crud', {
     get():Service  { return crudFactory.getService(this) }
   })
-
-  /*
-  const crud = new Service(repositoryClass, axios, options)
-  Object.defineProperty(repositoryClass.prototype, '$crud', {
-    get():Service  { return crud }
-  })
-  */
 
   // apiPath
   let apiPath:string | null = null
