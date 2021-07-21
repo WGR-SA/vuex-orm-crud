@@ -35,7 +35,15 @@ describe('unit/VuexORMCRUD', () => {
 
   // create user
   class Photo extends VuexORM.Model {
+
     static entity = 'photos'
+
+    static fields () {
+      return {
+        id: this.attr(null),
+        img_src: this.attr(null)
+      }
+    }
   }
 
   it('can install the plugin', async () => {
@@ -48,46 +56,8 @@ describe('unit/VuexORMCRUD', () => {
     expect(photoRepo.$crud).toBeInstanceOf(Service)
 
     // check get
-    let records = await photoRepo.$crud.get()
-    console.log(records)
-    expect(photoRepo.find(1)).toBeInstanceOf(Photo)
+    await photoRepo.$crud.get()
+    expect(photoRepo.orderBy('id').first()).toBeInstanceOf(Photo)
+
   })
 })
-
-
-/*
-const link = createHttpLink({ uri: '/graphql', fetch })
-
-const cache = new InMemoryCache()
-
-const apolloClient = new ApolloClient({ link, cache })
-
-const apolloProvider = new ApolloProvider({
-  defaultClient: apolloClient
-})
-
-Vue.use(Vuex)
-VuexORM.use(VuexORMApollo, { apolloProvider })
-
-describe('unit/VuexORMApollo', () => {
-  class User extends Model {
-    static entity = 'users'
-  }
-
-  it('can install the plugin', () => {
-    const store = new Store({
-      plugins: [VuexORM.install()],
-      strict: true
-    })
-
-    expect(store.$apolloProvider).toBe(apolloProvider)
-    expect(store.$apollo).toBe(apolloClient)
-
-    const photoRepo = store.$repo(User)
-
-    expect(photoRepo.apolloProvider).toBe(apolloProvider)
-    expect(photoRepo.apollo).toBe(apolloClient)
-  })
-})
-
-*/

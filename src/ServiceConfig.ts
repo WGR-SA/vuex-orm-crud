@@ -22,14 +22,14 @@ export class ServiceRequestParsingConfig {
 
 export class ServiceOrmInsertConfig {
   static fromPlain(plain: any):ServiceOrmInsertConfig {
-    return plainToClass(ServiceOrmInsertConfig, Object.assign({save: true, persistBy:'save'} , plain), { excludeExtraneousValues: true })
+    return plainToClass(ServiceOrmInsertConfig, Object.assign({save: true, persistBy:'insert'} , plain), { excludeExtraneousValues: true })
   }
 
   static fromExist(exist:ServiceOrmInsertConfig, plain: any):ServiceOrmInsertConfig {
     return plainToClassFromExist(exist, Object.assign(classToPlain(exist) , plain))
   }
   @Expose() save:boolean = true
-  @Expose() persistBy:string = 'save' // insert | fresh
+  @Expose() persistBy:string = 'insert' // save | insert | fresh
 }
 
 export class ServiceAxiosRequestConfig {
