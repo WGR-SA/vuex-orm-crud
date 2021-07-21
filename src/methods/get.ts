@@ -10,10 +10,10 @@ export default async function get(service: Service, path:string | null = null, c
   const axiosRequestConfig:AxiosRequestConfig = ServiceAxiosRequestConfig.fromExist(service.axiosRequestConfig, config)
   const requestParsingConfig:ServiceRequestParsingConfig = ServiceRequestParsingConfig.fromExist(service.requestParsingConfig, config)
   const ormInsertConf:ServiceOrmInsertConfig = ServiceOrmInsertConfig.fromExist(service.ormInsertConf, config)
-  const relations: Array<Model> = config.relations?? []
+  const relations: Array<Model> = config && config.relations? config.relations: []
 
   // request
-  const response:AxiosResponse = await service.axios.get(pathHelper(path?? service.repository.apiPath, relations), axiosRequestConfig)
+  const response:AxiosResponse = await service.axios.get(pathHelper(path?? service.repository.getModel().apiPath, relations), axiosRequestConfig)
   const records = parserHelper(response, requestParsingConfig, service)
 
   // don't save if save = false

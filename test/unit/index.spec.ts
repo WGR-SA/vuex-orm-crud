@@ -6,8 +6,18 @@ import VuexORMCRUD from '@/index'
 import {Service} from '@/Service'
 
 // Vuex ORM
-const client = axios.create({ baseURL: '/api' })
-VuexORM.use(VuexORMCRUD, { client })
+const client = axios.create({
+  baseURL: 'https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity',
+  params: {
+    api_key: "DEMO_KEY",
+    sol: 1000,
+    camera: "fhaz"
+  },
+})
+VuexORM.use(VuexORMCRUD, {
+  client,
+  dataKey: "photos"
+})
 
 const store = createStore({
   state: {
@@ -24,20 +34,23 @@ const store = createStore({
 describe('unit/VuexORMCRUD', () => {
 
   // create user
-  class User extends VuexORM.Model {
-    static entity = 'users'
+  class Photo extends VuexORM.Model {
+    static entity = 'photos'
   }
 
-  it('can install the plugin', () => {
+  it('can install the plugin', async () => {
 
     // check AXIOS
     expect(store.$axios).toBe(client)
 
     // check Service
-    const userRepo = store.$repo(User)
-    expect(userRepo.$crud).toBeInstanceOf(Service)
-    console.log(userRepo.$crud.get())
-    //expect(userRepo['$crud'].axios).toBe(client)
+    const photoRepo = store.$repo(Photo)
+    expect(photoRepo.$crud).toBeInstanceOf(Service)
+
+    // check get
+    let records = await photoRepo.$crud.get()
+    console.log(records)
+    expect(photoRepo.find(1)).toBeInstanceOf(Photo)
   })
 })
 
@@ -70,10 +83,10 @@ describe('unit/VuexORMApollo', () => {
     expect(store.$apolloProvider).toBe(apolloProvider)
     expect(store.$apollo).toBe(apolloClient)
 
-    const userRepo = store.$repo(User)
+    const photoRepo = store.$repo(User)
 
-    expect(userRepo.apolloProvider).toBe(apolloProvider)
-    expect(userRepo.apollo).toBe(apolloClient)
+    expect(photoRepo.apolloProvider).toBe(apolloProvider)
+    expect(photoRepo.apollo).toBe(apolloClient)
   })
 })
 

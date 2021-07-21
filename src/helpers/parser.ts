@@ -5,6 +5,7 @@ import { ServiceRequestParsingConfig } from '@/ServiceConfig';
 
 export default function parser(response:AxiosResponse, requestParsingConfig:ServiceRequestParsingConfig, service:Service): never[] | Element | Elements
 {
+
   // pagination
   if(service && requestParsingConfig.paginationKey && response.data[requestParsingConfig.paginationKey])
   {
