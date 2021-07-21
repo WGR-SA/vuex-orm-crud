@@ -1,13 +1,12 @@
-import * as _ from "lodash";
 import { Model } from '@vuex-orm/core';
-import joinPath from '../utils/joinPath'
+import joinPath from '@/utils/joinPath'
 
-export default function createPath(path:string, relations: Array<Model>): string | null
+export default function createPath(path:string, relations: Array<Model>): string
 {
 
   if(relations.length)
   {
-    const prefix = _.reduce(relations, (result, rel) => joinPath(result, rel['apiPath']), '');
+    const prefix = relations.reduce((result, value) => joinPath(result, value['apiPath']), '');
     path = joinPath(prefix, path)
   }
 

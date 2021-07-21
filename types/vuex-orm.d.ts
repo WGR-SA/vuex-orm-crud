@@ -8,5 +8,7 @@ declare module '@vuex-orm/core/dist/src/repository/Repository' {
      * The axios instance.
      */
     $crud: Service
+
+    apiPath: string
   }
 }

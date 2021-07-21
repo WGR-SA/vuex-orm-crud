@@ -1,25 +1,23 @@
 import { Repository, Model } from '@vuex-orm/core'
-import { AxiosInstance } from 'axios'
-import { plainToClass } from 'class-transformer';
+import { AxiosInstance, AxiosRequestConfig } from 'axios'
+import { ServiceRequestParsingConfig, ServiceAxiosRequestConfig, ServiceOrmInsertConfig } from '@/ServiceConfig';
 import getMethod from '@/methods/get'
-
-export class ServiceConfig {
-  dataKey:string = 'data'
-  paginationKey:string =  'pagination'
-}
 
 export class Service {
 
-  protected repository: Repository<Model>
-
+  repository: Repository<Model>
   axios: AxiosInstance
-  config: ServiceConfig
+  axiosRequestConfig: AxiosRequestConfig
+  requestParsingConfig: ServiceRequestParsingConfig
+  ormInsertConf:ServiceOrmInsertConfig
+  pagination: any
 
-  constructor(repository: Repository<Model>, axios: AxiosInstance, options: any){
+  constructor(repository: Repository<Model>, axios: AxiosInstance, options: any) {
     this.repository = repository
     this.axios = axios
-    this.config = plainToClass(ServiceConfig, options, { excludeExtraneousValues: true })
-
+    this.axiosRequestConfig = ServiceAxiosRequestConfig.fromPlain(options)
+    this.requestParsingConfig = ServiceRequestParsingConfig.fromPlain(options)
+    this.ormInsertConf = ServiceOrmInsertConfig.fromPlain(options)
   }
 
   async get(path:string | null = null, config:any | null  = null){

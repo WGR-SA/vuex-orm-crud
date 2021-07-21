@@ -1,61 +1,26 @@
-import { plainToClassFromExist } from 'class-transformer';
-import { AxiosRequestConfig } from 'axios'
-// import axiosFilter from '@/filters/axios'
-
-class AxiosRequestConfigClass {}
-
-const arcc: AxiosRequestConfig = new AxiosRequestConfigClass()
-
-/*
-import * as _ from "lodash"
-
-import parserFilter from '../filters/parser.js'
-import ormInsertFilter from '../filters/orm-insert.js'
-import relationsFilter from '../filters/relations.js'
-import pathHelper from '../helpers/path.js'
-import parserHelper from '../helpers/parser.js'
-*/
-import {ServiceConfig, Service} from '@/Service.js'
+import { Model } from '@vuex-orm/core'
+import { AxiosRequestConfig, AxiosResponse } from 'axios'
+import pathHelper from '@/helpers/path'
+import parserHelper from '@/helpers/parser'
+import {Service} from '@/Service.js'
+import { ServiceRequestParsingConfig, ServiceAxiosRequestConfig, ServiceOrmInsertConfig } from '@/ServiceConfig';
 
 export default async function get(service: Service, path:string | null = null, config:any | null  = {}): Promise<never[]|Record<string, unknown>|[]|null>
 {
-  // filter stuff
-  let conf:ServiceConfig  = plainToClassFromExist(service.config, config)
-  let axiosConf:AxiosRequestConfig = plainToClassFromExist(arcc, config, { excludeExtraneousValues: true, enableImplicitConversion: true })
-  console.log(conf)
-  console.log(path, conf, axiosConf)
-
-  // records
-  let records:any = [{name:'yo'}];
-
-  return records;
-
-  /*
-  const
-  conf = Object.assign({}, service.config, config),
-  axiosConf = axiosFilter(conf),
-  parserConf = parserFilter(conf),
-  ormInsertConf = ormInsertFilter(conf),
-  relations = relationsFilter(conf)
-
-  // check client
-  const { get } = conf.client
-  if(_.isUndefined(get)) throw new Error(`HTTP Client has no get method`)
+  const axiosRequestConfig:AxiosRequestConfig = ServiceAxiosRequestConfig.fromExist(service.axiosRequestConfig, config)
+  const requestParsingConfig:ServiceRequestParsingConfig = ServiceRequestParsingConfig.fromExist(service.requestParsingConfig, config)
+  const ormInsertConf:ServiceOrmInsertConfig = ServiceOrmInsertConfig.fromExist(service.ormInsertConf, config)
+  const relations: Array<Model> = config.relations?? []
 
   // request
-  const response = await get(pathHelper(path?? service.repository.apiPath, relations), axiosConf)
-  const records = parserHelper(response, parserConf, service)
+  const response:AxiosResponse = await service.axios.get(pathHelper(path?? service.repository.apiPath, relations), axiosRequestConfig)
+  const records = parserHelper(response, requestParsingConfig, service)
 
   // don't save if save = false
   if(!ormInsertConf.save) return records;
 
-  // persistOptions
-  const storeObject = {data: records, persistOptions: null}
-  if(ormInsertConf.persistOptions) storeObject.persistOptions = ormInsertConf.persistOptions
-
   // switch method persistBy
-  service.repository[ormInsertConf.persistBy](storeObject)
+  service.repository[ormInsertConf.persistBy](records)
 
   return records;
-  */
 }

@@ -6,7 +6,5 @@ declare module 'vuex/types/index' {
      * The axios instance.
      */
     $axios: AxiosInstance
-
-    apiPath: string
   }
 }
