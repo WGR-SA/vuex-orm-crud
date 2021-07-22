@@ -20,6 +20,7 @@ export default async function get(service: Service, path:string | null = null, c
   if(!ormInsertConf.save) return records;
 
   // switch method persistBy
+  console.log(records)
   service.repository[ormInsertConf.persistBy](records)
 
   return records;
