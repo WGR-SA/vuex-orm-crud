@@ -1,7 +1,7 @@
-// import { nextTick } from 'vue'
 import { createStore } from 'vuex'
 import axios from 'axios';
 import VuexORM from '@vuex-orm/core'
+import { Item, Attr, Str } from '@vuex-orm/core'
 import VuexORMCRUD from '@/index'
 import {Service} from '@/Service'
 
@@ -25,8 +25,7 @@ const client = axios.create({
   params: params,
 })
 VuexORM.use(VuexORMCRUD, {
-  client,
-  dataKey: "photos"
+  client
 })
 
 const store = createStore({
@@ -49,12 +48,11 @@ describe('unit/VuexORMCRUD', () => {
 
     static entity = 'photos'
 
-    static fields () {
-      return {
-        id: this.attr(null),
-        img_src: this.attr(null)
-      }
-    }
+    @Attr(null)
+    id!: number | null
+
+    @Str('')
+    img_src!: string
   }
 
   // INSTALL
@@ -77,20 +75,39 @@ describe('unit/VuexORMCRUD', () => {
     const promise = photoRepo.$crud.get()
 
     //expect(mockAxios.get).toHaveBeenCalledWith(baseURL, params);
-    mockAxios.mockResponse({  "data": {
-      "photos": [
-        {
-          "id": 102693,
-          "img_src": "http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01000/opgs/edr/fcam/FLB_486265257EDR_F0481570FHAZ00323M_.JPG",
-        },
-        {
-          "id": 102694,
-          "img_src": "http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01000/opgs/edr/fcam/FRB_486265257EDR_F0481570FHAZ00323M_.JPG",
-        }
-      ]
-    }});
+    mockAxios.mockResponse({  "data": [
+      {
+        "id": 1,
+        "img_src": "A.JPG",
+      },
+      {
+        "id": 2,
+        "img_src": "B.JPG",
+      }
+    ]});
     await promise;
 
     expect(photoRepo.orderBy('id').first()).toBeInstanceOf(Photo)
+  })
+
+  // SAVE
+  it('can DO SAVE', async () => {
+
+    // check get
+    const photoRepo = store.$repo(Photo)
+    const promise = photoRepo.$crud.save({
+      "id": 3,
+      "img_src": "C.JPG",
+    })
+
+    mockAxios.mockResponse({ "data": {
+      "id": 3,
+      "img_src": "C.JPG",
+    }});
+
+    await promise;
+    const lastPhoto:Item<Photo> = photoRepo.orderBy('id', 'desc').first()
+    expect(lastPhoto).toBeInstanceOf(Photo)
+    expect(lastPhoto?.id).toBe(3)
   })
 })

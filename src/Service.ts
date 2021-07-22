@@ -1,7 +1,8 @@
-import { Repository, Model } from '@vuex-orm/core'
+import { Repository, Model, Element } from '@vuex-orm/core'
 import { AxiosInstance, AxiosRequestConfig } from 'axios'
 import { ServiceRequestParsingConfig, ServiceAxiosRequestConfig, ServiceOrmInsertConfig } from '@/ServiceConfig';
 import getMethod from '@/methods/get'
+import saveMethod from '@/methods/save'
 
 export class Service {
 
@@ -22,6 +23,10 @@ export class Service {
 
   async get(path:string | null = null, config:any | null  = null){
     return await getMethod(this, path, config)
+  }
+
+  async save(records: Element | Element[],keys: Array<string> | null = null, path:string | null = null, config:any | null  = null,){
+    return await saveMethod(this, path, config, records, keys)
   }
 }
 

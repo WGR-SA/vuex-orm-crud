@@ -1,32 +1,36 @@
-import * as _ from "lodash"
-import axiosFilter from '../filters/axios.js'
-import parserFilter from '../filters/parser.js'
-import ormInsertFilter from '../filters/orm-insert.js'
-import relationsFilter from '../filters/relations.js'
-import pathHelper from '../helpers/path.js'
-import parserHelper from '../helpers/parser.js'
+import { Model, Element } from '@vuex-orm/core'
+import { AxiosRequestConfig, AxiosResponse } from 'axios'
+import pathHelper from '@/helpers/path'
+import parserHelper from '@/helpers/parser'
+import {Service} from '@/Service.js'
+import { ServiceRequestParsingConfig, ServiceAxiosRequestConfig, ServiceOrmInsertConfig } from '@/ServiceConfig';
 
-export default async function save(path = null, keys = null, config = null): Promise<[]|null>
+export default async function save(service: Service, path:string | null = null, config:any | null  = {}, records: Element | Element[],keys: Array<string> | null = null ): Promise<never[]|Record<string, unknown>|[]|null>
 {
-  const
-  conf = Object.assign({}, this.constructor.crud().config, config),
-  axiosConf = axiosFilter(conf),
-  parserConf = parserFilter(conf),
-  ormInsertConf = ormInsertFilter(conf),
-  relations = relationsFilter(conf)
+  const axiosRequestConfig:AxiosRequestConfig = ServiceAxiosRequestConfig.fromExist(service.axiosRequestConfig, config)
+  const requestParsingConfig:ServiceRequestParsingConfig = ServiceRequestParsingConfig.fromExist(service.requestParsingConfig, config)
+  const ormInsertConf:ServiceOrmInsertConfig = ServiceOrmInsertConfig.fromExist(service.ormInsertConf, config)
+  const relations: Array<Model> = config && config.relations? config.relations: []
 
-  const { post } = conf.client
-  if(_.isUndefined(post)) throw new Error(`HTTP Client has no post method`)
-
-  const data = this.pickKeys(keys?? Object.keys(this.$toJson()))
-  const response = await post(pathHelper(path?? this.apiPath(), relations), data, axiosConf)
+  let data:Element | Element[] = []
+  if(Array.isArray(records))
+  {
+    records.forEach(record => {
+      let model:Model = service.repository.make(record)
+      data.push(model.pickKeys(keys?? Object.keys(model.$toJson())))
+    })
+  } else {
+    let model:Model = service.repository.make(records)
+    data = model.pickKeys(keys?? Object.keys(model.$toJson()))
+  }
+  const response:AxiosResponse = await service.axios.post(pathHelper(path?? service.repository.getModel().baseApiPath, relations), data, axiosRequestConfig)
 
   // merge
-  const values = Object.assign({}, data, parserHelper(response, parserConf))
+  const values = Object.assign({}, data, parserHelper(response, requestParsingConfig, service))
 
   // don't save if save = false
   if(!ormInsertConf.save) return values;
 
-  const stored = await this.$insert({data: values})
-  return stored[this.constructor.entity][0]
+  // switch method persistBy
+  return service.repository[ormInsertConf.persistBy](values)
 }

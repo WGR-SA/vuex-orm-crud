@@ -1,4 +1,4 @@
-// import {kebabCase} from 'lodash'
+import {omit, pick} from "lodash"
 import { Model } from '@vuex-orm/core';
 import joinPath from '@/utils/joinPath'
 
@@ -19,4 +19,10 @@ export default function( model: typeof Model): void
       return p
     },
   })
+
+  // pickKeys
+  model.prototype.pickKeys = function(keys?: Array<string>):Record<string, unknown> {
+    if(!keys) keys = Object.keys(this.$toJson())
+    return omit(pick(this.$toJson(), keys), ['$id']);
+  }
 }

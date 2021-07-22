@@ -8,6 +8,7 @@ declare module '@vuex-orm/core/dist/src/model/Model' {
      */
     baseApiPath: string
     apiPath: string
+    pickKeys(keys?: Array<string>):Record<string, unknown>
   }
 }
 
