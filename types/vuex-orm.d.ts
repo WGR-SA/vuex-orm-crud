@@ -6,6 +6,7 @@ declare module '@vuex-orm/core/dist/src/model/Model' {
     /**
      * The axios instance.
      */
+    baseApiPath: string
     apiPath: string
   }
 }

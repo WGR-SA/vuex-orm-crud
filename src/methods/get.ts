@@ -13,7 +13,7 @@ export default async function get(service: Service, path:string | null = null, c
   const relations: Array<Model> = config && config.relations? config.relations: []
 
   // request
-  const response:AxiosResponse = await service.axios.get(pathHelper(path?? service.repository.getModel().apiPath, relations), axiosRequestConfig)
+  const response:AxiosResponse = await service.axios.get(pathHelper(path?? service.repository.getModel().baseApiPath, relations), axiosRequestConfig)
   const records = parserHelper(response, requestParsingConfig, service)
 
   // don't save if save = false
