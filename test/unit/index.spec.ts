@@ -31,6 +31,22 @@ const store = createStore({
   plugins: [VuexORM.install()]
 })
 
+// TEST BABY
+jest
+  .spyOn(axios, "get")
+  .mockImplementation(() => Promise.resolve({
+    "photos": [
+      {
+        "id": 102693,
+        "img_src": "http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01000/opgs/edr/fcam/FLB_486265257EDR_F0481570FHAZ00323M_.JPG",
+      },
+      {
+        "id": 102694,
+        "img_src": "http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01000/opgs/edr/fcam/FRB_486265257EDR_F0481570FHAZ00323M_.JPG",
+      }
+    ]
+  }));
+
 describe('unit/VuexORMCRUD', () => {
 
   // create user
@@ -46,6 +62,7 @@ describe('unit/VuexORMCRUD', () => {
     }
   }
 
+  // INSTALL
   it('can install the plugin', async () => {
 
     // check AXIOS
@@ -54,10 +71,15 @@ describe('unit/VuexORMCRUD', () => {
     // check Service
     const photoRepo = store.$repo(Photo)
     expect(photoRepo.$crud).toBeInstanceOf(Service)
+  })
+
+
+  // GET
+  it('can DO GET', async () => {
 
     // check get
+    const photoRepo = store.$repo(Photo)
     await photoRepo.$crud.get()
     expect(photoRepo.orderBy('id').first()).toBeInstanceOf(Photo)
-
   })
 })
