@@ -1,44 +1,28 @@
 // import { nextTick } from 'vue'
 import { createStore } from 'vuex'
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import VuexORM from '@vuex-orm/core'
 import VuexORMCRUD from '@/index'
 import {Service} from '@/Service'
 
-// MOCK
-// Create an object of type of mocked Axios.
-const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-//Prepare the response we want to get from axios
-const mockedResponse: AxiosResponse = {
-  data: {
-    "photos": [
-      {
-        "id": 102693,
-        "img_src": "http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01000/opgs/edr/fcam/FLB_486265257EDR_F0481570FHAZ00323M_.JPG",
-      },
-      {
-        "id": 102694,
-        "img_src": "http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01000/opgs/edr/fcam/FRB_486265257EDR_F0481570FHAZ00323M_.JPG",
-      }
-    ]
-  },
-  status: 200,
-  statusText: 'OK',
-  headers: {},
-  config: {},
-};
-// Make the mock return the custom axios response
-mockedAxios.get.mockResolvedValueOnce(mockedResponse);
+// MOCK
+import mockAxios from 'jest-mock-axios';
+afterEach(() => {
+  // cleaning up the mess left behind the previous test
+  mockAxios.reset();
+});
 
 // Vuex ORM
+const baseURL:string = 'https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity'
+const params =  {
+  api_key: "DEMO_KEY",
+  sol: 1000,
+  camera: "fhaz"
+}
 const client = axios.create({
-  baseURL: 'https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity',
-  params: {
-    api_key: "DEMO_KEY",
-    sol: 1000,
-    camera: "fhaz"
-  },
+  baseURL: baseURL,
+  params: params,
 })
 VuexORM.use(VuexORMCRUD, {
   client,
@@ -90,7 +74,23 @@ describe('unit/VuexORMCRUD', () => {
 
     // check get
     const photoRepo = store.$repo(Photo)
-    await photoRepo.$crud.get()
+    const promise = photoRepo.$crud.get()
+
+    //expect(mockAxios.get).toHaveBeenCalledWith(baseURL, params);
+    mockAxios.mockResponse({  "data": {
+      "photos": [
+        {
+          "id": 102693,
+          "img_src": "http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01000/opgs/edr/fcam/FLB_486265257EDR_F0481570FHAZ00323M_.JPG",
+        },
+        {
+          "id": 102694,
+          "img_src": "http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01000/opgs/edr/fcam/FRB_486265257EDR_F0481570FHAZ00323M_.JPG",
+        }
+      ]
+    }});
+    await promise;
+
     expect(photoRepo.orderBy('id').first()).toBeInstanceOf(Photo)
   })
 })
