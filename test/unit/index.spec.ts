@@ -16,16 +16,10 @@ const store = createStore({plugins: [VuexORM.install()]})
 
 // create user
 class Photo extends VuexORM.Model {
-
   static entity = 'photos'
-
-  @Attr(null)
-  id!: number | null
-
-  @Str('')
-  img_src!: string
+  @Attr(null) id!: number | null
+  @Str('') img_src!: string
 }
-
 const photoRepo = store.$repo(Photo)
 
 // TEST BABY
