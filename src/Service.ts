@@ -3,6 +3,7 @@ import { AxiosInstance, AxiosRequestConfig } from 'axios'
 import { ServiceRequestParsingConfig, ServiceAxiosRequestConfig, ServiceOrmInsertConfig } from '@/ServiceConfig';
 import getMethod from '@/methods/get'
 import saveMethod from '@/methods/save'
+import updateMethod from '@/methods/update'
 
 export class Service {
 
@@ -27,6 +28,10 @@ export class Service {
 
   async save(records: Element | Element[],keys: Array<string> | null = null, path:string | null = null, config:any | null  = null,){
     return await saveMethod(this, path, config, records, keys)
+  }
+
+  async update(records: Element | Element[],keys: Array<string> | null = null, path:string | null = null, config:any | null  = null,){
+    return await updateMethod(this, path, config, records, keys)
   }
 }
 

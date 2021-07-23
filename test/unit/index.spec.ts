@@ -26,6 +26,8 @@ class Photo extends VuexORM.Model {
   img_src!: string
 }
 
+const photoRepo = store.$repo(Photo)
+
 // TEST BABY
 describe('unit/VuexORMCRUD', () => {
 
@@ -36,7 +38,6 @@ describe('unit/VuexORMCRUD', () => {
     expect(store.$axios).toBe(client)
 
     // check Service
-    const photoRepo = store.$repo(Photo)
     expect(photoRepo.$crud).toBeInstanceOf(Service)
   })
 
@@ -44,7 +45,6 @@ describe('unit/VuexORMCRUD', () => {
   it('can DO GET', async () => {
 
     // check get
-    const photoRepo = store.$repo(Photo)
     const promise = photoRepo.$crud.get()
 
     // mock response
@@ -54,22 +54,50 @@ describe('unit/VuexORMCRUD', () => {
     ]});
     await promise;
 
+    // check url called
+    expect(mockAxios.get).toHaveBeenCalledWith('photos', {});
+
+    // check store
     expect(photoRepo.orderBy('id').first()).toBeInstanceOf(Photo)
   })
 
   // 3. SAVE
   it('can DO SAVE', async () => {
 
-    // check get
-    const photoRepo = store.$repo(Photo)
-    const promise = photoRepo.$crud.save({"id": 3,"img_src": "C.JPG"})
+    // check save
+    let payload = {"img_src": "C.JPG"}
+    const promise = photoRepo.$crud.save(payload)
 
     // mock response
     mockAxios.mockResponse({ "data": {"id": 3, "img_src": "C.JPG"}});
     await promise;
 
+    // check url called
+    expect(mockAxios.post).toHaveBeenCalledWith('photos', payload, {});
+
+    // check store
     const lastPhoto:Item<Photo> = photoRepo.orderBy('id', 'desc').first()
     expect(lastPhoto).toBeInstanceOf(Photo)
     expect(lastPhoto?.id).toBe(3)
+  })
+
+  // 4. UPDATE
+  it('can DO UPDATE', async () => {
+
+    // check update
+    let payload = {"id": 3, "img_src": "D.JPG"}
+    const promise = photoRepo.$crud.update(payload)
+
+    // mock response
+    mockAxios.mockResponse({ "data": {"id": 3}});
+    await promise;
+
+    // check url called
+    expect(mockAxios.put).toHaveBeenCalledWith('photos/3', payload, {});
+
+    // check store
+    const lastPhoto:Item<Photo> = photoRepo.orderBy('id', 'desc').first()
+    expect(lastPhoto).toBeInstanceOf(Photo)
+    expect(lastPhoto?.img_src).toBe("D.JPG")
   })
 })

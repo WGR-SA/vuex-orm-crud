@@ -1,34 +1,29 @@
-import * as _ from "lodash"
-import axiosFilter from '../filters/axios.js'
-import parserFilter from '../filters/parser.js'
-import ormInsertFilter from '../filters/orm-insert.js'
-import relationsFilter from '../filters/relations.js'
-import pathHelper from '../helpers/path.js'
-import parserHelper from '../helpers/parser.js'
+import { Model, Element } from '@vuex-orm/core'
+import { AxiosRequestConfig, AxiosResponse } from 'axios'
+import pathHelper from '@/helpers/path'
+import parserHelper from '@/helpers/parser'
+import {Service} from '@/Service.js'
+import { ServiceRequestParsingConfig, ServiceAxiosRequestConfig, ServiceOrmInsertConfig } from '@/ServiceConfig';
 
-export default async function update(path = null, keys = null, config = null):Promise<Record<string, unknown>|never[]|[]|null>
+export default async function update(service: Service, path:string | null = null, config:any | null  = {}, record: Element,keys: Array<string> | null = null ): Promise<never[]|Record<string, unknown>|[]|null>
 {
-  const
-  conf = Object.assign({}, this.constructor.crud().config, config),
-  axiosConf = axiosFilter(conf),
-  parserConf = parserFilter(conf),
-  ormInsertConf = ormInsertFilter(conf),
-  relations = relationsFilter(conf)
+  const axiosRequestConfig:AxiosRequestConfig = ServiceAxiosRequestConfig.fromExist(service.axiosRequestConfig, config)
+  const requestParsingConfig:ServiceRequestParsingConfig = ServiceRequestParsingConfig.fromExist(service.requestParsingConfig, config)
+  const ormInsertConf:ServiceOrmInsertConfig = ServiceOrmInsertConfig.fromExist(service.ormInsertConf, config)
+  const relations: Array<Model> = config && config.relations? config.relations: []
 
-  // check client
-  const { put } = conf.client
-  if(_.isUndefined(put)) throw new Error(`HTTP Client has no put method`)
+  let data:Element
+  let model:Model = service.repository.make(record)
+  data = keys? model.pickKeys(keys): record
 
-  // request
-  const data = this.pickKeys(keys?? Object.keys(this.$toJson()))
-  const response = await put(pathHelper(path?? this.apiPath(), relations), data, axiosConf)
+  const response:AxiosResponse = await service.axios.put(pathHelper(path?? model.apiPath, relations), data, axiosRequestConfig)
 
   // merge
-  const values = Object.assign({}, data, parserHelper(response, parserConf))
+  const values = Object.assign({}, data, parserHelper(response, requestParsingConfig, service))
 
   // don't save if save = false
   if(!ormInsertConf.save) return values;
 
-  const stored = await this.$update(values)
-  return stored
+  // switch method persistBy
+  return service.repository[ormInsertConf.persistBy](record)
 }

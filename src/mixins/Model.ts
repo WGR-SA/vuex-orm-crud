@@ -1,4 +1,4 @@
-import {omit, pick} from "lodash"
+import {pick} from "lodash"
 import { Model } from '@vuex-orm/core';
 import joinPath from '@/utils/joinPath'
 
@@ -14,8 +14,8 @@ export default function( model: typeof Model): void
   // apiPath
   Object.defineProperty(model.prototype, 'apiPath', {
     get():string  {
-      let p = this.$self().baseApiPath
-      if(this.$id) p = joinPath(p, this.$id.toString())
+      let p = this.baseApiPath
+      if(this.id) p = joinPath(p, this.id.toString())
       return p
     },
   })
@@ -23,6 +23,6 @@ export default function( model: typeof Model): void
   // pickKeys
   model.prototype.pickKeys = function(keys?: Array<string>):Record<string, unknown> {
     if(!keys) keys = Object.keys(this.$toJson())
-    return omit(pick(this.$toJson(), keys), ['$id']);
+    return pick(this.$toJson(), keys)
   }
 }
