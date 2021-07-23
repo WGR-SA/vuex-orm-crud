@@ -77,7 +77,6 @@ describe('unit/VuexORMCRUD', () => {
 
     // check store
     const lastPhoto:Item<Photo> = photoRepo.orderBy('id', 'desc').first()
-    expect(lastPhoto).toBeInstanceOf(Photo)
     expect(lastPhoto?.id).toBe(3)
   })
 
@@ -97,7 +96,24 @@ describe('unit/VuexORMCRUD', () => {
 
     // check store
     const lastPhoto:Item<Photo> = photoRepo.orderBy('id', 'desc').first()
-    expect(lastPhoto).toBeInstanceOf(Photo)
     expect(lastPhoto?.img_src).toBe("D.JPG")
+  })
+
+  // 4. DELETE
+  it('can DO DELETE', async () => {
+
+    // check delete
+    const promise = photoRepo.$crud.delete(3)
+
+    // mock response
+    mockAxios.mockResponse({ "data": {"id": 3}});
+    await promise;
+
+    // check url called
+    expect(mockAxios.delete).toHaveBeenCalledWith('photos/3', {});
+
+    // check store
+    const lastPhoto:Item<Photo> = photoRepo.orderBy('id', 'desc').first()
+    expect(lastPhoto?.id).toBe(2)
   })
 })

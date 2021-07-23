@@ -4,6 +4,7 @@ import { ServiceRequestParsingConfig, ServiceAxiosRequestConfig, ServiceOrmInser
 import getMethod from '@/methods/get'
 import saveMethod from '@/methods/save'
 import updateMethod from '@/methods/update'
+import deleteMethod from '@/methods/delete'
 
 export class Service {
 
@@ -32,6 +33,10 @@ export class Service {
 
   async update(records: Element | Element[],keys: Array<string> | null = null, path:string | null = null, config:any | null  = null,){
     return await updateMethod(this, path, config, records, keys)
+  }
+
+  async delete(id: string | number, path:string | null = null, config:any | null  = null,){
+    return await deleteMethod(this, path, config, id)
   }
 }
 
