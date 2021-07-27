@@ -1,10 +1,10 @@
 import { Repository, Model, Element } from '@vuex-orm/core'
 import { AxiosInstance, AxiosRequestConfig } from 'axios'
 import { ServiceRequestParsingConfig, ServiceAxiosRequestConfig, ServiceOrmInsertConfig } from '@/ServiceConfig';
-import getMethod from '@/methods/get'
-import saveMethod from '@/methods/save'
-import updateMethod from '@/methods/update'
-import deleteMethod from '@/methods/delete'
+import {get as getMethod} from '@/methods/get'
+import {save as saveMethod} from '@/methods/save'
+import {update as updateMethod} from '@/methods/update'
+import {del as deleteMethod} from '@/methods/delete'
 
 export class Service {
 

@@ -3,7 +3,7 @@ import {AxiosResponse} from 'axios'
 import {Service} from '@/Service'
 import { ServiceRequestParsingConfig } from '@/ServiceConfig';
 
-export default function parser(response:AxiosResponse, requestParsingConfig:ServiceRequestParsingConfig, service:Service): never[] | Element | Elements
+export function parser(response:AxiosResponse, requestParsingConfig:ServiceRequestParsingConfig, service:Service): never[] | Element | Elements
 {
 
   // pagination

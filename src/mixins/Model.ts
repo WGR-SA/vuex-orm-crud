@@ -1,5 +1,5 @@
 import { Model } from '@vuex-orm/core';
-import joinPath from '@/utils/joinPath'
+import {joinPath} from '@/utils/joinPath'
 
 export default function( model: typeof Model): void
 {
