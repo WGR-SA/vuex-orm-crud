@@ -11,7 +11,7 @@ afterEach(() => { mockAxios.reset();});
 
 // Vuex ORM
 const client = axios.create()
-VuexORM.use(VuexORMCRUD, {client})
+VuexORM.use(VuexORMCRUD, {client, yo: 'test'})
 const store = createStore({plugins: [VuexORM.install()]})
 
 // create user

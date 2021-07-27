@@ -12,7 +12,7 @@ export class Service {
   axios: AxiosInstance
   axiosRequestConfig: AxiosRequestConfig
   requestParsingConfig: ServiceRequestParsingConfig
-  ormInsertConf:ServiceOrmInsertConfig
+  ormInsertConf: ServiceOrmInsertConfig
   pagination: any
 
   constructor(repository: Repository<Model>, axios: AxiosInstance, options: any) {
@@ -20,6 +20,7 @@ export class Service {
     this.axios = axios
     this.axiosRequestConfig = ServiceAxiosRequestConfig.fromPlain(options)
     this.requestParsingConfig = ServiceRequestParsingConfig.fromPlain(options)
+    console.log(this.requestParsingConfig)
     this.ormInsertConf = ServiceOrmInsertConfig.fromPlain(options)
   }
 
