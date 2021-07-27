@@ -1,43 +1,78 @@
-import { AxiosRequestConfig } from 'axios'
-import { Expose, plainToClass, plainToClassFromExist, classToPlain } from 'class-transformer';
+import { AxiosRequestConfig, Method } from 'axios'
 
 interface arrayManip {
   (value: string|[]|Record<string, unknown>, index?: number, array?: any[]): Record<string, unknown> | [];
 }
 
+interface SRPC {
+  dataKey:string | null
+  paginationKey:string
+  dataTransformer?: arrayManip
+  filter?: arrayManip
+}
+
 export class ServiceRequestParsingConfig {
-  static fromPlain(plain: any):ServiceRequestParsingConfig{
-    return plainToClass(ServiceRequestParsingConfig, Object.assign({dataKey: null, paginationKey:'pagination'} , plain), { excludeExtraneousValues: true })
+  dataKey:string | null
+  paginationKey:string
+  dataTransformer?: arrayManip
+  filter?: arrayManip
+
+  constructor({dataKey = null, paginationKey = 'pagination', dataTransformer, filter} : SRPC){
+    this.dataKey = dataKey
+    this.paginationKey = paginationKey
+    if(dataTransformer) this.dataTransformer = dataTransformer
+    if(filter) this.filter = filter
   }
 
-  static fromExist(exist:ServiceRequestParsingConfig, plain: any):ServiceRequestParsingConfig {
-    return plainToClassFromExist(exist, Object.assign(classToPlain(exist) , plain))
+  static fromExist(exist:SRPC, plain: any):ServiceRequestParsingConfig {
+    return new ServiceRequestParsingConfig(Object.assign({}, exist, plain))
   }
+}
 
-  @Expose() dataKey:string | null = null
-  @Expose() paginationKey:string =  'pagination'
-  @Expose() dataTransformer?: arrayManip
-  @Expose() filter?: arrayManip
+interface SOIC {
+  save:boolean
+  persistBy:string
 }
 
 export class ServiceOrmInsertConfig {
-  static fromPlain(plain: any):ServiceOrmInsertConfig {
-    return plainToClass(ServiceOrmInsertConfig, Object.assign({save: true, persistBy:'save'} , plain), { excludeExtraneousValues: true })
+  save:boolean
+  persistBy:string
+
+  constructor({save = true, persistBy = 'save'} : SOIC) {
+    this.save = save
+    this.persistBy = persistBy
   }
 
   static fromExist(exist:ServiceOrmInsertConfig, plain: any):ServiceOrmInsertConfig {
-    return plainToClassFromExist(exist, Object.assign(classToPlain(exist) , plain))
+    return new ServiceOrmInsertConfig(Object.assign({}, exist, plain))
   }
-  @Expose() save:boolean = true
-  @Expose() persistBy:string = 'save' // save | insert | fresh
 }
 
 export class ServiceAxiosRequestConfig {
-  static fromPlain(plain: any):AxiosRequestConfig {
-    return plainToClass(ServiceAxiosRequestConfig, plain, { excludeExtraneousValues: true })
+  url?: string
+  method?: Method
+  baseURL?: string
+  headers?: any
+  params?: any
+  data?: any
+
+  constructor({
+    url,
+    method,
+    baseURL,
+    headers,
+    params,
+    data,
+  } : AxiosRequestConfig) {
+    if(url) this.url = url
+    if(method) this.method = method
+    if(baseURL) this.baseURL = baseURL
+    if(headers) this.headers = headers
+    if(params) this.params = params
+    if(data) this.data = data
   }
 
-  static fromExist(exist:AxiosRequestConfig, plain: any):AxiosRequestConfig {
-    return plainToClassFromExist(exist, Object.assign(classToPlain(exist) , plain))
+  static fromExist(exist:AxiosRequestConfig, plain: any):ServiceAxiosRequestConfig {
+    return new ServiceAxiosRequestConfig(Object.assign({}, exist, plain))
   }
 }

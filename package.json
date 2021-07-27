@@ -45,8 +45,7 @@
     "vuex": "^4.0.2"
   },
   "dependencies": {
-    "axios": "^0.21.1",
-    "class-transformer": "^0.4.0"
+    "axios": "^0.21.1"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^19.0.2",

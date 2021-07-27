@@ -18,10 +18,9 @@ export class Service {
   constructor(repository: Repository<Model>, axios: AxiosInstance, options: any) {
     this.repository = repository
     this.axios = axios
-    this.axiosRequestConfig = ServiceAxiosRequestConfig.fromPlain(options)
-    this.requestParsingConfig = ServiceRequestParsingConfig.fromPlain(options)
-    console.log(this.requestParsingConfig)
-    this.ormInsertConf = ServiceOrmInsertConfig.fromPlain(options)
+    this.axiosRequestConfig = new ServiceAxiosRequestConfig(options)
+    this.requestParsingConfig = new ServiceRequestParsingConfig(options)
+    this.ormInsertConf = new ServiceOrmInsertConfig(options)
   }
 
   async get(path:string | null = null, config:any | null  = null){
