@@ -1,4 +1,3 @@
-import {pick} from "lodash"
 import { Model } from '@vuex-orm/core';
 import joinPath from '@/utils/joinPath'
 
@@ -23,6 +22,8 @@ export default function( model: typeof Model): void
   // pickKeys
   model.prototype.pickKeys = function(keys?: Array<string>):Record<string, unknown> {
     if(!keys) keys = Object.keys(this.$toJson())
-    return pick(this.$toJson(), keys)
+    let obj = {}
+    keys.forEach((v,k) => {obj[k] = v})
+    return obj
   }
 }

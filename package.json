@@ -2,14 +2,18 @@
   "name": "@wgr-sa/vuex-orm-crud",
   "version": "0.0.11",
   "description": "vuex-orm plugin for RESTful CRUD backends",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "repository": "https://github.com/WGR-SA/vuex-orm-crud",
-  "author": "awallef",
-  "license": "MIT",
-  "private": false,
+  "main": "dist/vuex-orm-crud.cjs.js",
+  "browser": "dist/vuex-orm-crud.esm-browser.js",
+  "module": "dist/vuex-orm-crud.esm-bundler.js",
+  "unpkg": "dist/vuex-orm-crud.global.js",
+  "jsdelivr": "dist/vuex-orm-crud.global.js",
+  "typings": "dist/src/index.d.ts",
+  "files": [
+    "dist",
+    "types"
+  ],
   "scripts": {
-    "build": "tsc",
+    "build": "node scripts/build.js",
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix",
     "test": "jest",
@@ -17,28 +21,9 @@
     "docs:build": "vuepress build docs",
     "docs:deploy": "bash ./docs/deploy.sh"
   },
-  "peerDependencies": {
-    "@vuex-orm/core": "^1.0.0-draft.14",
-    "vuex": "^4.0.2"
-  },
-  "dependencies": {
-    "@types/lodash": "^4.14.170",
-    "axios": "^0.21.1",
-    "class-transformer": "^0.4.0",
-    "lodash": "^4.17.11"
-  },
-  "devDependencies": {
-    "@types/jest": "^26.0.23",
-    "@typescript-eslint/eslint-plugin": "^4.27.0",
-    "@typescript-eslint/parser": "^4.27.0",
-    "@vuex-orm/core": "^1.0.0-draft.14",
-    "eslint": "^7.28.0",
-    "jest": "^27.0.5",
-    "jest-mock-axios": "^4.4.0",
-    "ts-jest": "^27.0.3",
-    "typescript": "^4.3.3",
-    "vue": "^3.1.2",
-    "vuex": "^4.0.2"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WGR-SA/vuex-orm-crud.git"
   },
   "keywords": [
     "vue",
@@ -49,5 +34,40 @@
     "axios",
     "crud",
     "api"
-  ]
+  ],
+  "author": "awallef",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/WGR-SA/vuex-orm-crud/issues"
+  },
+  "peerDependencies": {
+    "@vuex-orm/core": "^1.0.0-draft.14",
+    "vuex": "^4.0.2"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "class-transformer": "^0.4.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^19.0.2",
+    "@rollup/plugin-node-resolve": "^13.0.4",
+    "@rollup/plugin-replace": "^3.0.0",
+    "@types/jest": "^26.0.23",
+    "@typescript-eslint/eslint-plugin": "^4.27.0",
+    "@typescript-eslint/parser": "^4.27.0",
+    "@vuex-orm/core": "^1.0.0-draft.14",
+    "brotli": "^1.3.2",
+    "chalk": "^4.1.1",
+    "eslint": "^7.28.0",
+    "execa": "^5.1.1",
+    "jest": "^27.0.5",
+    "jest-mock-axios": "^4.4.0",
+    "rollup": "^2.54.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.30.0",
+    "ts-jest": "^27.0.3",
+    "typescript": "^4.3.3",
+    "vue": "^3.1.2",
+    "vuex": "^4.0.2"
+  }
 }
